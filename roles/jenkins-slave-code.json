@@ -1,0 +1,38 @@
+{
+  "name":"jenkins-slave-code",
+  "description":"Configuration for jenkins slaves with development role",
+  "json_class":"Chef::Role",
+  "default_attributes":{},
+  "override_attributes": {
+    "java":{
+      "install_flavor":"openjdk",
+      "jdk_version":"7"
+    },
+    "maven":{
+      "setup_bin":"true"
+    },
+    "ssh_keys":{
+      "jenkins":"jenkins"
+    },
+    "jenkins-configurer": {
+      "email":"jenkins@kurento.org",
+      "master-host":"ci.kurento.org"
+    }
+  },
+  "chef_type":"role",
+  "run_list": [ 
+    "recipe[apt]",
+    "recipe[java]",
+    "recipe[git]",
+    "recipe[maven]",
+    "recipe[curl]",
+    "recipe[subversion]",
+    "recipe[mongodb::10gen_repo]",
+    "recipe[mongodb::default]",
+    "recipe[python]",
+    "recipe[jenkins-configurer]",
+    "recipe[jenkins-configurer::selenium]"
+  ],
+  "env_run_lists":{}
+}
+

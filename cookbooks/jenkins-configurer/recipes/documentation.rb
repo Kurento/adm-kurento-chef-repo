@@ -21,6 +21,10 @@
 
 include_recipe 'python'
 
+%w{python-setuptools python-dev libxml2-dev libxslt-dev zlib1g-dev}.each do |pkg|
+	package pkg
+end
+
 python_pip 'javasphinx'
 python_pip 'lxml'
 python_pip 'javalang'

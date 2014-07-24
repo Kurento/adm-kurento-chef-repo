@@ -1,0 +1,14 @@
+{
+  "name":"jenkins-slave-doc",
+  "description":"Configuration for jenkins slaves with documentation role",
+  "json_class":"Chef::Role",
+  "default_attributes":{},
+  "override_attributes": {},
+  "chef_type":"role",
+  "run_list": [ 
+    "recipe[apt]",
+    "recipe[jenkins-configurer::documentation]"
+  ],
+  "env_run_lists":{}
+}
+

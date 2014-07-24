@@ -26,6 +26,9 @@ group node['jenkins-configurer']['group'] do
   members node['jenkins-configurer']['user']
 end
 
+# This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
+node.automatic_attrs[:etc][:passwd][node['jenkins-configurer']['user']] = {:uid => 1000, :gid => 1000, :dir => node['jenkins-configurer']['home']}
+
 ruby_block "add_jenkins_user_to_sudoers" do
   block do
     file = Chef::Util::FileEdit.new("/etc/sudoers")
@@ -53,12 +56,14 @@ if not ::File.exists?("#{node['jenkins-configurer']['home']}/.ssh/config") then
   file "#{node['jenkins-configurer']['home']}/.ssh/config" do
     content "StrictHostKeyChecking no"
     action :create
+    owner node['jenkins-configurer']['user']
+    group node['jenkins-configurer']['group']
   end
 else
   ruby_block "disable_host_key_verification" do
     block do
       file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.ssh/config")
-      file.insert_line_if_no_match("/StrictHostKeyChecking no/", "StrictHostKeyChecking no")
+      file.insert_line_if_no_match("/StrictHostKeyChecking/", "StrictHostKeyChecking no")
       file.write_file
     end
   end
@@ -73,14 +78,14 @@ git_user node['jenkins-configurer']['user'] do
   email     node['jenkins-configurer']['email']
 end
 
-ssh_known_hosts_entry 'ci.kurento.org'
+ssh_known_hosts_entry node['jenkins-configurer']['master-host']
 
 include_recipe 'ssh-keys'
 
 # Enable signing maven artifacts with gnupg
-execute "gnupg signing credentials" do
-  command "sudo -u #{node['jenkins-configurer']['user']} -H scp -r #{node['jenkins-configurer']['user']}@#{node['jenkins-configurer']['master-host']}:.gnupg #{node['jenkins-configurer']['home']}"
-end
+# execute "gnupg signing credentials" do
+#   command "sudo -u #{node['jenkins-configurer']['user']} -H scp -r #{node['jenkins-configurer']['user']}@#{node['jenkins-configurer']['master-host']}:.gnupg #{node['jenkins-configurer']['home']}"
+# end
 
 package "xmlstarlet"
 
