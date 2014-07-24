@@ -83,9 +83,13 @@ ssh_known_hosts_entry node['jenkins-configurer']['master-host']
 include_recipe 'ssh-keys'
 
 # Enable signing maven artifacts with gnupg
-# execute "gnupg signing credentials" do
-#   command "sudo -u #{node['jenkins-configurer']['user']} -H scp -r #{node['jenkins-configurer']['user']}@#{node['jenkins-configurer']['master-host']}:.gnupg #{node['jenkins-configurer']['home']}"
-# end
+remote_directory "#{node['jenkins-configurer']['home']}" do
+  mode        0700
+  owner       node['jenkins-configurer']['user']
+  group       node['jenkins-configurer']['group']
+  files_owner node['jenkins-configurer']['user']
+  source      ".gnupg"
+end
 
 package "xmlstarlet"
 
