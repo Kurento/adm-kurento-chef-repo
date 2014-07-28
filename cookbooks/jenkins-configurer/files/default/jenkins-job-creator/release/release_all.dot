@@ -1,0 +1,96 @@
+digraph "dependencies" {
+splines = spline;
+layout=dot;
+
+"kms\ndtls-plugins" [style="dashed", color="green"];
+"gst\nkurento-plugins" -> "kms\ndtls-plugins";
+
+"kws\nrpc-builder" [style="dashed", color="green"];
+"kws\ncontent-api" -> "kws\nrpc-builder";
+"kws\nmedia-api" -> "kws\nrpc-builder";
+
+"kmf\nparent-pom" [style="dashed", color="green"];
+"kmf\ncommons"          -> "kmf\nparent-pom";
+"kmf\nspring"           -> "kmf\nparent-pom";
+"kms\ninterface"        -> "kmf\nparent-pom";
+"kmf\ncontent-protocol" -> "kmf\nparent-pom";
+"kmf\nrepository-api"   -> "kmf\nparent-pom";
+"kmf\njsonrpcconnector" -> "kmf\nparent-pom";
+"kmf\nthrift-interface" -> "kmf\nparent-pom";
+"kmf\nrepository-api"   -> "kmf\nparent-pom";
+"kmf\nmedia-api"        -> "kmf\nparent-pom";
+"kmf\ncontent-api"      -> "kmf\nparent-pom";
+"kmf\nmedia-connector"  -> "kmf\nparent-pom";
+
+"gst\nkurento-plugins";
+"kurento\nmedia-server" -> "gst\nkurento-plugins";
+
+"kmf\nspring";
+"kmf\nrepository-api" -> "kmf\nspring";
+"kmf\njsonrpcconnector" -> "kmf\nspring";
+"kmf\ncontent-api" -> "kmf\nspring";
+
+"kmf\ncommons";
+"kmf\nrepository-api" -> "kmf\ncommons";
+"kmf\njsonrpcconnector" -> "kmf\ncommons";
+"kmf\nthrift-interface" -> "kmf\ncommons";
+"kmf\nmedia-api" -> "kmf\ncommons";
+"kmf\ncontent-api" -> "kmf\ncommons";
+
+"kmf\ncontent-protocol";
+"kmf\ncontent-api" -> "kmf\ncontent-protocol";
+
+"kms\ninterface";
+"kmf\nthrift-interface" -> "kms\ninterface";
+"kurento\nmedia-server" -> "kms\ninterface";
+"kmf\ncontent-api" -> "kms\ninterface";
+
+"kws\nmedia-api";
+
+"kws\ncontent-api";
+"kmf\ncontent-demo" -> "kws\ncontent-api";
+"fi-lab\ndemo" -> "kws\ncontent-api";
+
+"kmf\nrepository-api"; "kmf\nrepository-api-test";
+"kmf\nrepository-api-test" -> "kmf\nrepository-api" [ label="tests", style="dotted" ];
+"kmf\ncontent-api" -> "kmf\nrepository-api";
+"doc\nkurento"  -> "kmf\nrepository-api";
+
+"kmf\njsonrpcconnector"; "kmf\njsonrpcconnector-test";
+"kmf\nmedia-api" -> "kmf\njsonrpcconnector";
+"kmf\nmedia-connector" -> "kmf\njsonrpcconnector";
+"kmf\nthrift-interface" -> "kmf\njsonrpcconnector";
+"kmf\njsonrpcconnector-test" -> "kmf\njsonrpcconnector" [ label="tests", style="dotted" ];
+
+"kurento\nmedia-server";
+"kmf\nthrift-interface" -> "kurento\nmedia-server" [ label="tests", style="dotted" ];
+"kmf\nmedia-api-test" -> "kurento\nmedia-server" [ label="tests", style="dotted" ];
+"kmf\ncontent-api-test" -> "kurento\nmedia-server" [ label="tests", style="dotted" ];
+"kmf\nmedia-connector-test" -> "kurento\nmedia-server" [ label="tests", style="dotted" ];
+
+"kmf\nthrift-interface";
+"kmf\nmedia-api" -> "kmf\nthrift-interface";
+"kmf\ncontent-api" -> "kmf\nthrift-interface";
+
+"kmf\nmedia-api"; "kmf\nmedia-api-test";
+"kmf\nmedia-api-test" -> "kmf\nmedia-api" [ label="tests", style="dotted" ];
+"kmf\nmedia-connector" -> "kmf\nmedia-api";
+"kmf\ncontent-api" -> "kmf\nmedia-api";
+"doc\nkurento"  -> "kmf\nmedia-api";
+
+"kmf\ncontent-api"; "kmf\ncontent-api-test";
+"kmf\ncontent-api-test" -> "kmf\ncontent-api" [ label="tests", style="dotted" ];
+"kmf\ncontent-demo" -> "kmf\ncontent-api";
+"fi-lab\ndemo" -> "kmf\ncontent-api";
+"doc\nkurento"  -> "kmf\ncontent-api";
+
+"kmf\nmedia-connector"; "kmf\nmedia-connector-test";
+"kmf\nmedia-connector-test" -> "kmf\nmedia-connector" [ label="tests", style="dotted" ];
+
+"fi-lab\ndemo";
+
+"kmf\ncontent-demo";
+
+"doc\nkurento";
+
+}

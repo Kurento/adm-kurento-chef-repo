@@ -63,7 +63,7 @@ else
   ruby_block "disable_host_key_verification" do
     block do
       file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.ssh/config")
-      file.insert_line_if_no_match("/StrictHostKeyChecking/", "StrictHostKeyChecking no")
+      file.insert_line_if_no_match(/StrictHostKeyChecking no/, "StrictHostKeyChecking no")
       file.write_file
     end
   end
@@ -88,6 +88,7 @@ remote_directory "#{node['jenkins-configurer']['home']}/.gnupg" do
   owner       node['jenkins-configurer']['user']
   group       node['jenkins-configurer']['group']
   files_owner node['jenkins-configurer']['user']
+  files_group node['jenkins-configurer']['group']
   source      ".gnupg"
 end
 
@@ -103,10 +104,20 @@ end
 ruby_block "disable_ipv6" do
   block do
     file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
-    file.insert_line_if_no_match("/net.ipv6.conf.all.disable_ipv6 = 1/", "net.ipv6.conf.all.disable_ipv6 = 1")
+    file.insert_line_if_no_match(/net.ipv6.conf.all.disable_ipv6 = 1/, "net.ipv6.conf.all.disable_ipv6 = 1")
     file.write_file
   end
 end
 
+cookbook_file "#{node['jenkins-configurer']['home']}/.npmrc"
 
-
+# Utility to extract version from documentation
+remote_directory "#{node['jenkins-configurer']['home']}/tools/jenkins-job-creator" do
+  mode        0777
+  owner       node['jenkins-configurer']['user']
+  group       node['jenkins-configurer']['group']
+  files_owner node['jenkins-configurer']['user']
+  files_group node['jenkins-configurer']['group']
+  files_mode  0775
+  source      "jenkins-job-creator"
+end

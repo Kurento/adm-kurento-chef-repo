@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-package 'xvfb' 
+package 'xvfb'
 
 cookbook_file '/etc/init.d/xvfb' do
   action :create
@@ -29,12 +29,14 @@ execute 'add xvfb to the set of init scripts' do
 end
 
 service 'xvfb' do
-  action :start
+  action  :start
 end
 
 ruby_block "export_display_on_bashrc" do
   block do
     file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.bashrc")
+    file.search_file_delete_line(/export DISPLAY/)
+    file.write_file
     file.insert_line_if_no_match(/export DISPLAY=0:1/, "export DISPLAY=0:1")
     file.write_file
   end
