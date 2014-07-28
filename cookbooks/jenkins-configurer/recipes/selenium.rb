@@ -93,7 +93,7 @@ end
 
 package 'maven'
 
-execute 'update-alternatives --set maven /usr/share/maven'
+execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'
 
 file "/etc/cron.hourly/ntpdate" do
   content "ntpdate ntp.ubuntu.com"
