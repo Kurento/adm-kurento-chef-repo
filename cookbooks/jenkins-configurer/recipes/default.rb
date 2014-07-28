@@ -40,7 +40,7 @@ end
 directory "#{node['jenkins-configurer']['home']}/.ssh" do
   owner node['jenkins-configurer']['user']
   group node['jenkins-configurer']['group']
-  mode 0600
+  mode 0755
   action :create
 end
 
@@ -83,7 +83,7 @@ ssh_known_hosts_entry node['jenkins-configurer']['master-host']
 include_recipe 'ssh-keys'
 
 # Enable signing maven artifacts with gnupg
-remote_directory "#{node['jenkins-configurer']['home']}" do
+remote_directory "#{node['jenkins-configurer']['home']}/.gnupg" do
   mode        0700
   owner       node['jenkins-configurer']['user']
   group       node['jenkins-configurer']['group']

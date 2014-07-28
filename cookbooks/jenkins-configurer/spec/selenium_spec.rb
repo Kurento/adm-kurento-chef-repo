@@ -38,4 +38,8 @@ describe 'jenkins-configurer::selenium' do
     expect(chef_run).to install_package("linux-headers-#{kernel_release}")
   end
 
+  it 'installs package maven' do
+    expect(chef_run).to install_package('maven')
+  end
+
 end

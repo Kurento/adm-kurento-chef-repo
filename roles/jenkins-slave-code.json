@@ -24,7 +24,6 @@
     "recipe[apt]",
     "recipe[java]",
     "recipe[git]",
-    "recipe[maven]",
     "recipe[curl]",
     "recipe[subversion]",
     "recipe[mongodb::10gen_repo]",

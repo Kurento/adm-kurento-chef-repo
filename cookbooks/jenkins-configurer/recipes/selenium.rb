@@ -32,6 +32,14 @@ service 'xvfb' do
   action :start
 end
 
+ruby_block "export_display_on_bashrc" do
+  block do
+    file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.bashrc")
+    file.insert_line_if_no_match("/export DISPLAY=0:1/", "export DISPLAY=0:1")
+    file.write_file
+  end
+end
+
 package 'mediainfo' 
 package 'firefox'
 
@@ -82,6 +90,10 @@ package 'nodejs'
 %w{debhelper cdbs default-jdk maven-debian-helper libmaven-assembly-plugin-java libmaven-compiler-plugin-java libfreemarker-java libgoogle-gson-java libslf4j-java libcommons-cli-java}.each do |pkg|
   package pkg
 end
+
+package 'maven'
+
+execute 'update-alternatives --set maven /usr/share/maven'
 
 file "/etc/cron.hourly/ntpdate" do
   content "ntpdate ntp.ubuntu.com"
