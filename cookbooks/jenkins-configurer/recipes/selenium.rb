@@ -35,7 +35,7 @@ end
 ruby_block "export_display_on_bashrc" do
   block do
     file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.bashrc")
-    file.insert_line_if_no_match("/export DISPLAY=0:1/", "export DISPLAY=0:1")
+    file.insert_line_if_no_match(/export DISPLAY=0:1/, "export DISPLAY=0:1")
     file.write_file
   end
 end

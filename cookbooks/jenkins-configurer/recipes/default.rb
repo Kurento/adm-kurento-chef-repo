@@ -32,7 +32,7 @@ node.automatic_attrs[:etc][:passwd][node['jenkins-configurer']['user']] = {:uid 
 ruby_block "add_jenkins_user_to_sudoers" do
   block do
     file = Chef::Util::FileEdit.new("/etc/sudoers")
-    file.insert_line_if_no_match("/jenkins    ALL = NOPASSWD:SETENV:  /usr/bin/apt-get, /etc/init.d/kurento, /bin/kill, /usr/bin/killall, /bin/netstat, /var/lib/jenkins/kurento-media-connector/support-files/kmf-media-connector.sh/", "jenkins    ALL = NOPASSWD:SETENV:  /usr/bin/apt-get, /etc/init.d/kurento, /bin/kill, /usr/bin/killall, /bin/netstat, /var/lib/jenkins/kurento-media-connector/support-files/kmf-media-connector.sh")
+    file.insert_line_if_no_match(/jenkins/, "jenkins    ALL = NOPASSWD:SETENV:  /usr/bin/apt-get, /etc/init.d/kurento, /bin/kill, /usr/bin/killall, /bin/netstat, /var/lib/jenkins/kurento-media-connector/support-files/kmf-media-connector.sh")
     file.write_file
   end
 end
