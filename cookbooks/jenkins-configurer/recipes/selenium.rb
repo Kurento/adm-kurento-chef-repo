@@ -32,6 +32,11 @@ service 'xvfb' do
   action  :start
 end
 
+file "#{node['jenkins-configurer']['home']}/.bashrc" do
+  action :create
+  not_if { ::File.exists?("#{node['jenkins-configurer']['home']}/.bashrc")}
+end
+
 ruby_block "export_display_on_bashrc" do
   block do
     file = Chef::Util::FileEdit.new("#{node['jenkins-configurer']['home']}/.bashrc")
