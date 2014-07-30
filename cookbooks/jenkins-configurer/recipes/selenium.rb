@@ -56,7 +56,10 @@ end
 
 package 'libpango1.0-0'
 package 'libappindicator1'
-execute "dpkg -i google-chrome-stable_current_amd64.deb"
+execute "install google chrome" do 
+  command "dpkg -i google-chrome-stable_current_amd64.deb ; touch /tmp/google-chrome"
+  not_if { ::File.exists?("/tmp/google-chrome")}
+end
 
 # Kurento Media Server
 apt_repository 'kurento' do
@@ -66,6 +69,8 @@ apt_repository 'kurento' do
   keyserver    'keyserver.ubuntu.com'
   key          '6B5278DE'
 end
+
+package 'rabbitmq-server'
 
 package 'kurento'
 # %w{devscripts cmake libthrift-dev thrift-compiler gstreamer1.0* libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libnice-dev gtk-doc-tools cmake libglibmm-2.4-dev uuid-dev libevent-dev libboost-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libsctp-dev libopencv-dev autoconf libjsoncpp-dev libtool libsoup2.4-dev tesseract-ocr-dev tesseract-ocr-eng libgnutls28-dev gnutls-bin libvpx-dev librabbitmq-dev ktool-rom-processor kurento rabbitmq-server}.each do |pkg|

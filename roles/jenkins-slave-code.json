@@ -16,7 +16,12 @@
     },
     "jenkins-configurer": {
       "email":"jenkins@kurento.org",
-      "master-host":"ci.kurento.org"
+      "master-host":"ci.kurento.org",
+      "npm": {
+        "username": "kurento-maintainer-team",
+        "password": "kur3nt0",
+        "email": "info@kurento.org"
+      }
     }
   },
   "chef_type":"role",

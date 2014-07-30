@@ -109,7 +109,36 @@ ruby_block "disable_ipv6" do
   end
 end
 
-cookbook_file "#{node['jenkins-configurer']['home']}/.npmrc"
+cookbook_file "#{node['jenkins-configurer']['home']}/.npmrc" do
+  owner   node['jenkins-configurer']['user']
+  group   node['jenkins-configurer']['group']
+  mode    0644
+end
+
+package 'expect'
+
+bash "npm adduser" do
+  code <<-EOF
+    /usr/bin/expect -c 'spawn npm adduser
+    expect "Username: "
+    send "#{node['jenkins-configurer']['npm']['username']}\r"
+    expect "Password: "
+    send "#{node['jenkins-configurer']['npm']['password']}\r"
+    expect "Email: (this IS public) "
+    send "#{node['jenkins-configurer']['npm']['email']}\r"
+    expect eof'
+    touch /tmp/npm-adduser
+    EOF
+  cwd node['jenkins-configurer']['home']
+  user node['jenkins-configurer']['user']
+  group node['jenkins-configurer']['group']
+  environment ({'HOME' => node['jenkins-configurer']['home']})
+  not_if { ::File.exists?("/tmp/npm-adduser")}
+end
+
+# file "/tmp/npm-credentials" do
+#   action :delete
+# end
 
 # Utility to extract version from documentation
 remote_directory "#{node['jenkins-configurer']['home']}/tools/jenkins-job-creator" do
