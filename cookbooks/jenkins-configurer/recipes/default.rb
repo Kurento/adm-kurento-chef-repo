@@ -27,7 +27,7 @@ group node['jenkins-configurer']['group'] do
 end
 
 # This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
-node.automatic_attrs[:etc][:passwd][node['jenkins-configurer']['user']] = {:uid => 1000, :gid => 1000, :dir => node['jenkins-configurer']['home']}
+node.automatic_attrs[:etc][:passwd][node['jenkins-configurer']['user']] = {:uid => node['jenkins-configurer']['user'], :gid => node['jenkins-configurer']['group'], :dir => node['jenkins-configurer']['home']}
 
 ruby_block "add_jenkins_user_to_sudoers" do
   block do
