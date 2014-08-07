@@ -32,5 +32,3 @@ end
 execute 'apt-get update'
 
 package 'lxc-docker'
-
-execute 
