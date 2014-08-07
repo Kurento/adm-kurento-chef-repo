@@ -1,0 +1,34 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: kurento-docker
+    run_list:
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::docker]
+    attributes:
+
+  - name: kurento-dev-integration
+    run_list:
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::kurento-dev-integration]
+    attributes:
+
+  - name: kurento-dev-media-server
+    run_list:
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::kurento-dev-media-server]
+    attributes:
+
+  - name: kurento-dev-debian
+    run_list:
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::kurento-dev-debian]
+    attributes:

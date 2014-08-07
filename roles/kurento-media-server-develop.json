@@ -1,0 +1,12 @@
+{
+  "name":"kurento-media-server-develop",
+  "description":"Installs dependencies needed to build kurento-media-server",
+  "json_class":"Chef::Role",
+  "default_attributes":{},
+  "override_attributes": {},
+  "chef_type":"role",
+  "run_list": [ 
+    "recipe[jenkins-configurer::kurento-media-server-develop]"
+  ],
+  "env_run_lists":{}
+}
