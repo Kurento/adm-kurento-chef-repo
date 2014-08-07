@@ -19,7 +19,7 @@
 
 execute 'apt-get update'
 
-node['kurento']['kurento-media-server']['develop']['dependencies'].each do |pkg|
+node['kurento']['kurento-dev-media-server']['dependencies'].each do |pkg|
 	package pkg do
 		options "--allow-unauthenticated"
 	end

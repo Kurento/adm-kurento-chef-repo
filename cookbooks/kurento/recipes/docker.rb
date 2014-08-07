@@ -17,16 +17,28 @@
 # limitations under the License.
 #
 
-include_recipe 'apt'
+# include_recipe 'apt'
 
-package 'apt-transport-https'
+# package 'apt-transport-https'
 
-apt_repository 'docker' do
-  uri          'https://get.docker.io/ubuntu'
-  distribution node['lsb']['codename']
-  components   ['main']
-  keyserver    'keyserver.ubuntu.com'
-  key          '36A1D7869245C8950F966E92D8576A8BA88D21E9'
+# apt_repository 'docker' do
+#   uri          'https://get.docker.io/ubuntu'
+#   distribution node['lsb']['codename']
+#   components   ['main']
+#   keyserver    'keyserver.ubuntu.com'
+#   key          '36A1D7869245C8950F966E92D8576A8BA88D21E9'
+# end
+
+execute 'apt-get update'
+
+package 'wget'
+
+execute "wget -qO- https://get.docker.io/gpg | sudo apt-key add - && touch /tmp/docker-key" do
+	not_if { ::File.exists?("/tmp/docker-key")}
+end
+
+execute "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list && touch /tmp/docker-apt" do
+	not_if { ::File.exists?("/tmp/docker-apt")}
 end
 
 execute 'apt-get update'

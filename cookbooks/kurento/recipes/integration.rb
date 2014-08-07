@@ -19,7 +19,9 @@
 
 package 'rabbitmq-server'
 
-package 'kurento'
+package 'kurento' do
+	options "--allow-unauthenticated"
+end
 
 # Required to test KWS
 package 'software-properties-common'
@@ -38,6 +40,13 @@ package 'nodejs'
 package 'maven'
 
 execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'
+
+directory "#{node['kurento']['home']}/test-files" do
+	action :create
+	mode 777
+    user node['kurento']['user']
+    group node['kurento']['group']
+end
 
 subversion "Checkout test files" do
   repository "http://files.kurento.org/svn/kurento"

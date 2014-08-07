@@ -5,6 +5,22 @@ default['kurento']['email'] = "jenkins@acme.org"
 default['kurento']['master-host'] = "ci.acme.org"
 default['kurento']['kurento-media-server']['repositories']['release'] = true
 default['kurento']['kurento-media-server']['repositories']['development'] = false
+default['kurento']['kurento-dev-media-server']['dependencies'] =
+	[
+		'debhelper',
+		'cmake',
+		'kms-core-dev',
+		'libboost-dev',
+		'libboost-system-dev',
+		'libboost-filesystem-dev', 
+		'libthrift-dev',
+		'thrift-compiler',
+		'libevent-dev',
+		'librabbitmq-dev',
+		'libboost-test-dev', 
+		'kms-elements',
+		'kms-filters'
+	]
 default['kurento']['kurento-dev-debian']['dependencies'] = 
 	[
 		'git',
