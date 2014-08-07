@@ -44,3 +44,5 @@ end
 execute 'apt-get update'
 
 package 'lxc-docker'
+
+execute 'docker pull ubuntu:14.04'
