@@ -3,7 +3,8 @@ name "kurento-docker"
 description "Builds a jenkins-base with docker"
 
 run_list "recipe[kurento::jenkins-base]",
-         "recipe[kurento::docker]"
+         "recipe[kurento::docker]",
+         "recipe[kurento::chef-testing]"
 
 override_attributes "java" => {
       "install_flavor" => "openjdk",
