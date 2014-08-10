@@ -46,3 +46,7 @@ execute 'apt-get update'
 package 'lxc-docker'
 
 execute 'docker pull ubuntu:14.04'
+
+execute 'iptables -F'
+execute 'iptables -A INPUT -p tcp --dport 20023 -s ci.kurento.org -j ACCEPT'
+execute 'iptables -A INPUT -p tcp --dport 20023 -j DROP'
