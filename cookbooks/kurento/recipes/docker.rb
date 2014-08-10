@@ -41,6 +41,10 @@ execute "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.lis
 	not_if { ::File.exists?("/tmp/docker-apt")}
 end
 
+execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
+	not_if { ::File.exists?("/tmp/docker-conf")}
+end
+
 execute 'apt-get update'
 
 package 'lxc-docker'
