@@ -85,6 +85,8 @@ git_user node['kurento']['user'] do
   email     node['kurento']['email']
 end
 
+package "git-review"
+
 ssh_known_hosts_entry node['kurento']['master-host']
 
 include_recipe 'ssh-keys'
@@ -99,6 +101,7 @@ remote_directory "#{node['kurento']['home']}/.gnupg" do
   source      ".gnupg"
 end
 
+package "default-jdk"
 package "xmlstarlet"
 
 # Only available since Ubuntu 14.04 Trusty Tahr
