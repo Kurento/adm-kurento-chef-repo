@@ -37,6 +37,7 @@ package 'g++'
 package 'make'
 package 'nodejs'
 
+package 'kurento-media-server'
 package 'maven'
 
 execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'

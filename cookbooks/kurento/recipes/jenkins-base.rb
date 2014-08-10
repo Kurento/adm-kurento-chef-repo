@@ -19,6 +19,8 @@
 
 include_recipe 'openssh'
 
+execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
+
 directory '/var/run/sshd' do
   action :create
   recursive true
