@@ -28,4 +28,5 @@ keyserver    'keyserver.ubuntu.com'
 key          '6B5278DE'
 end
 
+execute 'apt-key update'
 execute 'apt-get update'
