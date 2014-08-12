@@ -19,9 +19,10 @@
 
 package 'xvfb'
 
-cookbook_file '/etc/init.d/xvfb' do
-  action :create
-  mode   '0755'
+cookbook_file 'xvfb' do
+  action :create_if_missing
+  path '/etc/init.d/xvfb'
+  mode '0755'
 end
 
 execute 'add xvfb to the set of init scripts' do
@@ -29,7 +30,8 @@ execute 'add xvfb to the set of init scripts' do
 end
 
 service 'xvfb' do
-  action  :start
+  action [ :enable, :start ]
+  supports :start => true, :stop => true, :restart => true
 end
 
 file "#{node['kurento']['home']}/.bashrc" do
