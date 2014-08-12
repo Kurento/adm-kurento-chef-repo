@@ -37,23 +37,33 @@ package 'g++'
 package 'make'
 package 'nodejs'
 
-package 'kurento-media-server'
+package 'kurento-media-server' do
+  action :install
+  options "--force-yes"
+end
+
 package 'maven'
 
 execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'
 
 directory "#{node['kurento']['home']}/test-files" do
-	action :create
-	mode 777
+    action :delete
+end
+
+directory "#{node['kurento']['home']}/test-files" do
+    action :create
+    mode 777
     user node['kurento']['user']
     group node['kurento']['group']
 end
 
-subversion "Checkout test files" do
-  repository "http://files.kurento.org/svn/kurento"
-  destination "#{node['kurento']['home']}/test-files"
-  revision "HEAD"
-  user node['kurento']['user']
-  group node['kurento']['group']
-  action :checkout
-end
+package 'subversion'
+execute "svn checkout http://files.kurento.org/svn/kurento #{node['kurento']['home']}/test-files"
+# subversion "Checkout test files" do
+#  repository "http://files.kurento.org/svn/kurento"
+#  destination "#{node['kurento']['home']}/test-files"
+#  revision "HEAD"
+#  user node['kurento']['user']
+#  group node['kurento']['group']
+#  action :checkout
+# end
