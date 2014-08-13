@@ -29,8 +29,6 @@
 #   key          '36A1D7869245C8950F966E92D8576A8BA88D21E9'
 # end
 
-execute 'apt-get update'
-
 package 'wget'
 
 execute "wget -qO- https://get.docker.io/gpg | sudo apt-key add - && touch /tmp/docker-key" do
@@ -49,8 +47,35 @@ execute 'apt-get update'
 
 package 'lxc-docker'
 
-execute 'docker pull ubuntu:14.04'
-
+# Secure docker network access
 execute 'iptables -F'
 execute 'iptables -A INPUT -p tcp --dport 20023 -s ci.kurento.org -j ACCEPT'
 execute 'iptables -A INPUT -p tcp --dport 20023 -j DROP'
+
+# Build kurento images
+execute 'docker pull ubuntu:14.04'
+
+directory '/tmp/kurento-docker' do
+	action :delete
+	recursive true
+end
+
+git '/tmp/kurento-docker' do
+	action :checkout
+	repository 'ssh://jenkins@repository.kurento.com:12345/adm-kurento-docker-repo'
+	revision 'develop'
+	user 'jenkins'
+end
+
+cookbook_file "build-kurento-docker-images" do
+	path '/tmp/kurento-docker/build-kurento-docker-images'
+	mode '0775'
+	owner 'jenkins'
+end
+
+execute 'build-kurento-docker-images' do
+	command '/tmp/kurento-docker/build-kurento-docker-images'
+	cwd '/tmp/kurento-docker'
+	timeout 14400
+end
+
