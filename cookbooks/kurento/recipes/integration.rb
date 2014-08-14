@@ -52,24 +52,7 @@ directory "#{node['kurento']['home']}/test-files" do
     recursive true
 end
 
-directory "#{node['kurento']['home']}/test-files" do
-    action :create
-    mode '0755'
-    user node['kurento']['user']
-    group node['kurento']['group']
-end
-
 package 'subversion'
 execute "svn checkout http://files.kurento.org/svn/kurento #{node['kurento']['home']}/test-files" do
     user node['kurento']['user']
-    group node['kurento']['group']
 end
-
-# subversion "Checkout test files" do
-#  repository "http://files.kurento.org/svn/kurento"
-#  destination "#{node['kurento']['home']}/test-files"
-#  revision "HEAD"
-#  user node['kurento']['user']
-#  group node['kurento']['group']
-#  action :checkout
-# end

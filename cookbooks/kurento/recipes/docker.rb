@@ -69,7 +69,7 @@ end
 
 cookbook_file "build-kurento-docker-images" do
 	path '/tmp/kurento-docker/build-kurento-docker-images'
-	mode '0775'
+	mode 0775
 	owner 'jenkins'
 end
 

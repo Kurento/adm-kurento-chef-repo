@@ -22,7 +22,7 @@ package 'xvfb'
 cookbook_file 'xvfb' do
   action :create_if_missing
   path '/etc/init.d/xvfb'
-  mode '0755'
+  mode 0755
 end
 
 execute 'add xvfb to the set of init scripts' do
