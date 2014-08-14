@@ -18,9 +18,15 @@
 #
 
 package 'rabbitmq-server'
+service 'rabbitmq-server' do
+	action [:enable , :start]
+end
 
-package 'kurento' do
+package 'kurento-media-server' do
 	options "--allow-unauthenticated"
+end
+service 'kurento-media-server' do
+	action [:enable, :start]
 end
 
 # Required to test KWS
@@ -37,28 +43,28 @@ package 'g++'
 package 'make'
 package 'nodejs'
 
-package 'kurento-media-server' do
-  action :install
-  options "--force-yes"
-end
-
 package 'maven'
 
 execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'
 
 directory "#{node['kurento']['home']}/test-files" do
     action :delete
+    recursive true
 end
 
 directory "#{node['kurento']['home']}/test-files" do
     action :create
-    mode 777
+    mode '0755'
     user node['kurento']['user']
     group node['kurento']['group']
 end
 
 package 'subversion'
-execute "svn checkout http://files.kurento.org/svn/kurento #{node['kurento']['home']}/test-files"
+execute "svn checkout http://files.kurento.org/svn/kurento #{node['kurento']['home']}/test-files" do
+    user node['kurento']['user']
+    group node['kurento']['group']
+end
+
 # subversion "Checkout test files" do
 #  repository "http://files.kurento.org/svn/kurento"
 #  destination "#{node['kurento']['home']}/test-files"
