@@ -52,7 +52,11 @@ directory "#{node['kurento']['home']}/test-files" do
     recursive true
 end
 
-package 'subversion'
-execute "svn checkout http://files.kurento.org/svn/kurento #{node['kurento']['home']}/test-files" do
+subversion "test-files" do
+    repository "http://files.kurento.org/svn/kurento"
+    revision "HEAD"
+    destination "#{node['kurento']['home']}/test-files"
     user node['kurento']['user']
+    group node['kurento']['user']
+    action :sync
 end
