@@ -31,6 +31,8 @@ python_pip 'javalang'
 python_pip 'docutils'
 python_pip 'sphinx'
 
-package 'texlive-full'
+package 'texlive-full' do
+	timeout 3600
+end
 
-execute 'dpkg --reconfigure'
+execute 'dpkg-reconfigure --frontend=noninteractive texlive-full'
