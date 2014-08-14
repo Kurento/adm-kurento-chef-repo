@@ -49,6 +49,7 @@ directory "#{node['kurento']['home']}/test-files" do
     recursive true
 end
 
+package 'subversion'
 subversion "test-files" do
     repository "http://files.kurento.org/svn/kurento"
     revision "HEAD"

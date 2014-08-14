@@ -4,11 +4,11 @@
 
 for BASENAME in kurento-dev-base kurento-dev-debian kurento-dev-media-server kurento-dev-integration
 do
-    IMAGENAME=$(echo $BASENAME| sed -e 's/-/\\\//')
-    if docker images |grep -q "$BASE_IMAGE"; then
-        sed -e "s/ubuntu.*$/$IMAGENAME/" $BASENAME/Dockerfile > Dockerfile.tmp
+    IMAGENAME=$(echo $BASENAME| sed -e 's/-/\//')
+    IMAGEPATTERN=$(echo $BASENAME| sed -e 's/-/\\\//')
+    if docker images |grep -q "$IMAGENAME"; then
+        sed -e "s/ubuntu.*$/$IMAGEPATTERN/" $BASENAME/Dockerfile > Dockerfile.tmp
         mv Dockerfile.tmp $BASENAME/Dockerfile
     fi
-    IMAGENAME=$(echo $BASENAME| sed -e 's/-/\//')
     docker build -t $IMAGENAME $BASENAME
 done
