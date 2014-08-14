@@ -25,9 +25,6 @@ end
 package 'kurento-media-server' do
 	options "--allow-unauthenticated"
 end
-service 'kurento-media-server' do
-	action [:enable, :start]
-end
 
 # Required to test KWS
 package 'software-properties-common'
