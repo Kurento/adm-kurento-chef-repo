@@ -61,6 +61,12 @@ file "#{node['kurento']['home']}/.ssh/id_rsa" do
   action :create
 end
 
+cookbook_file 'jenkins.crt' do
+  action :create_if_missing
+  path "#{node['kurento']['home']}/.ssh/jenkins.crt"
+  mode 0600
+end
+
 if not ::File.exists?("#{node['kurento']['home']}/.ssh/config") then
   file "#{node['kurento']['home']}/.ssh/config" do
     content "StrictHostKeyChecking no"
