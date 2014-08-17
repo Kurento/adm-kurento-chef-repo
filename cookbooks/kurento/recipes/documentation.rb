@@ -34,11 +34,3 @@ python_pip 'sphinx'
 package 'texlive-full' do
 	timeout 3600
 end
-
-# Set locales
-cookbook_file 'locale' do
-  action :create_if_missing
-  path '/etc/default/locale'
-  mode 0644
-end
-execute 'dpkg-reconfigure --frontend=noninteractive locales'

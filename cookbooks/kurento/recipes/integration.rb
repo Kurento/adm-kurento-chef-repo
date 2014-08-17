@@ -23,7 +23,7 @@ service 'rabbitmq-server' do
 end
 
 package 'kurento-media-server' do
-	options "--allow-unauthenticated"
+	options "--allow-unauthenticated --force-yes"
 end
 
 # Required to test KWS

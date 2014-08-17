@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
-package 'git-buildpackage'
+package 'git-buildpackage' do
+  timeout 3600
+end
 package 'devscripts'
 package 'debhelper'
