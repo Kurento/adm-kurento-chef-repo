@@ -22,7 +22,8 @@ service 'rabbitmq-server' do
 	action [:enable , :start]
 end
 
-package 'kurento-media-server' do
+# Install old media server
+package 'kurento' do
 	options "--allow-unauthenticated --force-yes"
 end
 
