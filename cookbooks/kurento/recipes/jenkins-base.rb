@@ -58,13 +58,15 @@ file "#{node['kurento']['home']}/.ssh/id_rsa" do
   group node['kurento']['group']
   content data_bag_item('users', 'jenkins')['ssh_private_key']
   mode 0600
-  action :create
+  action :create_if_missing
 end
 
 cookbook_file 'jenkins.crt' do
-  action :create_if_missing
+  owner node['kurento']['user']
+  group node['kurento']['group']
   path "#{node['kurento']['home']}/.ssh/jenkins.crt"
   mode 0600
+  action :create_if_missing
 end
 
 if not ::File.exists?("#{node['kurento']['home']}/.ssh/config") then
