@@ -57,5 +57,7 @@ subversion "test-files" do
     destination "#{node['kurento']['home']}/test-files"
     user node['kurento']['user']
     group node['kurento']['user']
+    svn_arguments "--config-dir #{node['kurento']['home']}/.subversion"
+    svn_info_args "--config-dir #{node['kurento']['home']}/.subversion"
     action :sync
 end
