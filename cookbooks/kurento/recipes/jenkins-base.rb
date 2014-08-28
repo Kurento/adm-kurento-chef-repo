@@ -170,6 +170,10 @@ bash "npm adduser" do
     expect eof'
     touch /tmp/npm-adduser
     EOF
+  cwd node['kurento']['home']
+  user node['kurento']['user']
+  group node['kurento']['group']
+  environment ({'HOME' => node['kurento']['home']})
 end
 
 # Utility to extract version from documentation
