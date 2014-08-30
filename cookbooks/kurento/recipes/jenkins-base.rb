@@ -111,7 +111,12 @@ remote_directory "#{node['kurento']['home']}/.gnupg" do
   source      ".gnupg"
 end
 
-package "default-jdk"
+# Install JDK without fuse (path for docker containers)
+package "default-jdk" do
+action :install
+options "--no-install-recommends"
+end
+
 package "xmlstarlet"
 
 # Only available since Ubuntu 14.04 Trusty Tahr

@@ -65,11 +65,15 @@ else
   google_package_name = 'google-chrome-stable_current_i386.deb'
 end
 
-execute "wget https://dl.google.com/linux/direct/#{google_package_name}" do
-  not_if { ::File.exists?(google_package_name)}
-end
+# Install Google Chrome
 
-execute "install google chrome" do 
-  command "dpkg -i #{google_package_name} && touch /tmp/google-chrome"
-  not_if { ::File.exists?("/tmp/google-chrome")}
-end
+package 'google-chrome-stable'
+
+#execute "wget https://dl.google.com/linux/direct/#{google_package_name}" do
+#  not_if { ::File.exists?(google_package_name)}
+#end
+
+#execute "install google chrome" do 
+#  command "dpkg -i #{google_package_name} && touch /tmp/google-chrome"
+#  not_if { ::File.exists?("/tmp/google-chrome")}
+#end

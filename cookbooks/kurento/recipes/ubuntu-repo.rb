@@ -25,4 +25,21 @@ ruby_block "add_kurento_repo" do
   end
 end  
 
+ruby_block "add_google_chrome_repo" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
+    file.insert_line_if_no_match(/deb http:\/\/dl.google.com\/linux\/chrome\/deb\/ stable main/, "deb http://dl.google.com/linux/chrome/deb/ stable main")
+    file.write_file
+  end
+end
+
+ruby_block "add_ubuntu_security_repo" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
+    file.insert_line_if_no_match(/deb http:\/\/security.ubuntu.com\/ubuntu trusty-security mai/, "deb http://security.ubuntu.com/ubuntu trusty-security mai")
+    file.write_file
+  end
+end
+
+
 execute 'apt-get update'
