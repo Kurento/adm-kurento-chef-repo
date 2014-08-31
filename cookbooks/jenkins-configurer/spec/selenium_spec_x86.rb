@@ -13,8 +13,10 @@ describe 'jenkins-configurer::selenium' do
      end.converge(described_recipe) 
   end
 
-  it 'installs correct chrome package' do
-    expect(chef_run).to run_execute("dpkg -i google-chrome-stable_current_i386.deb && touch /tmp/google-chrome")
-  end
+# Install Google Chrome
+  package 'google-chrome-stable'
+#  it 'installs correct chrome package' do
+#    expect(chef_run).to run_execute("dpkg -i google-chrome-stable_current_i386.deb && touch /tmp/google-chrome")
+#  end
 
 end

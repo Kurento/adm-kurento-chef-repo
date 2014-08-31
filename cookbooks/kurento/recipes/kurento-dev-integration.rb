@@ -23,3 +23,6 @@ include_recipe 'kurento::dpkg-build'
 include_recipe 'kurento::integration'
 include_recipe 'kurento::selenium'
 include_recipe 'kurento::documentation'
+
+# MongoDB server with default settings, ports 27017, 27018, 27019, 28017
+include_recipe 'mongodb::default'
