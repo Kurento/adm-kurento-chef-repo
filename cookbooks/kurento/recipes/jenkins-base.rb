@@ -21,6 +21,8 @@ include_recipe 'openssh'
 
 execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
 
+execute "apt-get update"
+
 directory '/var/run/sshd' do
   action :create
   recursive true
@@ -134,15 +136,29 @@ ruby_block "disable_ipv6" do
   end
 end
 
-cookbook_file "#{node['kurento']['home']}/.npmrc" do
-  owner   node['kurento']['user']
-  group   node['kurento']['group']
-  mode    0644
+apt_repository 'nodejs' do
+  uri          'http://ppa.launchpad.net/chris-lea/node.js/ubuntu'
+  distribution node['lsb']['codename']
+  components   ['main']
+  keyserver    'keyserver.ubuntu.com'
+  key          'C7917B12'
+end
+
+package 'nodejs'
+
+cookbook_file "/root/.npmrc" do
+  owner   "root"
+  group   "root"
+  mode    0660
 end
 
 package 'expect'
 
 bash "npm adduser" do
+  cwd "/root"
+  user "root"
+  group "root"
+  environment ({'HOME' => '/root'})
   code <<-EOF
     /usr/bin/expect -c 'spawn npm adduser
     expect "Username: "
@@ -154,11 +170,6 @@ bash "npm adduser" do
     expect eof'
     touch /tmp/npm-adduser
     EOF
-  cwd node['kurento']['home']
-  user node['kurento']['user']
-  group node['kurento']['group']
-  environment ({'HOME' => node['kurento']['home']})
-  not_if { ::File.exists?("/tmp/npm-adduser")}
 end
 
 # Utility to extract version from documentation

@@ -13,6 +13,19 @@ platforms:
   - name: ubuntu-14.04
 
 suites:
+  - name: jenkins-base
+    data_bags_path: "test/integration/data_bags"
+    run_list:
+      - recipe[kurento::jenkins-base]
+    attributes: 
+      kurento:
+        email: "jenkins@kurento.org"
+        master-host: "ci.kurento.org"
+        npm:
+          email: "info@kurento.org"
+          username: "kurento-maintainer-team"
+          password: "kur3nt0"
+
   - name: kurento-docker
     data_bags_path: "test/integration/data_bags"
     run_list:
