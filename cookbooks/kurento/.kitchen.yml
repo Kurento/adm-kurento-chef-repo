@@ -3,8 +3,7 @@ driver:
   name: docker
 driver_config:
   use_sudo: false
-  require_chef_omnibus: true
-  privileged: true
+  provision_command: curl -L https://www.getchef.com/chef/install.sh | bash
 
 provisioner:
   name: chef_zero
@@ -27,6 +26,8 @@ suites:
           password: "kur3nt0"
 
   - name: kurento-docker
+    driver_config:
+      privileged: true
     data_bags_path: "test/integration/data_bags"
     run_list:
       - recipe[kurento::jenkins-base]
