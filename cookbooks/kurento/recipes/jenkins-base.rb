@@ -17,17 +17,59 @@
 # limitations under the License.
 #
 
-include_recipe 'openssh'
-
+# Configure Kurento's apt proxy
 execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
-
 execute "apt-get update"
 
+# Install openssh and create directory /var/run/sshd
+include_recipe 'openssh'
 directory '/var/run/sshd' do
   action :create
   recursive true
 end
 
+# Install git and configure user
+include_recipe 'git_user'
+git_user node['kurento']['user'] do
+  login     node['kurento']['user']
+  home      node['kurento']['home']
+  full_name node['kurento']['user']
+  email     node['kurento']['email']
+end
+
+# Install git-review
+package "git-review"
+
+# Install xmlstarlet
+package "xmlstarlet"
+
+# Install jshon
+# Only available since Ubuntu 14.04 Trusty Tahr
+if platform?("ubuntu")
+  if node['platform_version'] == "14.04"
+    package "jshon"
+  end
+end
+
+# Install expect
+package 'expect'
+
+# Install wget
+package 'wget'
+
+# Install Java
+# Install JDK without fuse (path for docker containers)
+package "default-jdk" do
+  action :install
+  options "--no-install-recommends"
+end
+
+# Install software-properties-common (required to add PPAs)
+package 'software-properties-common'
+package 'python-software-properties'
+
+
+# Create user & group jenkins
 user node['kurento']['user'] do
   home node['kurento']['home']
   supports :manage_home => true
@@ -40,6 +82,7 @@ end
 # This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
 node.automatic_attrs[:etc][:passwd][node['kurento']['user']] = {:uid => node['kurento']['user'], :gid => node['kurento']['group'], :dir => node['kurento']['home']}
 
+# Add user jenkins to sudoers
 ruby_block "add_jenkins_user_to_sudoers" do
   block do
     file = Chef::Util::FileEdit.new("/etc/sudoers")
@@ -48,6 +91,7 @@ ruby_block "add_jenkins_user_to_sudoers" do
   end
 end
 
+# Add jenkins private key & certificate
 directory "#{node['kurento']['home']}/.ssh" do
   owner node['kurento']['user']
   group node['kurento']['group']
@@ -71,6 +115,7 @@ cookbook_file 'jenkins.crt' do
   action :create_if_missing
 end
 
+# Disable strict host checkin. Accepts keys from all hosts
 if not ::File.exists?("#{node['kurento']['home']}/.ssh/config") then
   file "#{node['kurento']['home']}/.ssh/config" do
     content "StrictHostKeyChecking no"
@@ -88,105 +133,11 @@ else
   end
 end
 
-include_recipe 'git_user'
-
-git_user node['kurento']['user'] do
-  login     node['kurento']['user']
-  home      node['kurento']['home']
-  full_name node['kurento']['user']
-  email     node['kurento']['email']
-end
-
-package "git-review"
-
+# Add public key from master
 ssh_known_hosts_entry node['kurento']['master-host']
-
 include_recipe 'ssh-keys'
 
-# Enable signing maven artifacts with gnupg
-remote_directory "#{node['kurento']['home']}/.gnupg" do
-  mode        0700
-  owner       node['kurento']['user']
-  group       node['kurento']['group']
-  files_owner node['kurento']['user']
-  files_group node['kurento']['group']
-  source      ".gnupg"
-end
-
-# Install JDK without fuse (path for docker containers)
-package "default-jdk" do
-action :install
-options "--no-install-recommends"
-end
-
-package "xmlstarlet"
-
-# Only available since Ubuntu 14.04 Trusty Tahr
-if platform?("ubuntu")
-  if node['platform_version'] == "14.04"
-    package "jshon"
-  end
-end
-
-ruby_block "disable_ipv6" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
-    file.insert_line_if_no_match(/net.ipv6.conf.all.disable_ipv6 = 1/, "net.ipv6.conf.all.disable_ipv6 = 1")
-    file.write_file
-  end
-end
-
-apt_repository 'nodejs' do
-  uri          'http://ppa.launchpad.net/chris-lea/node.js/ubuntu'
-  distribution node['lsb']['codename']
-  components   ['main']
-  keyserver    'keyserver.ubuntu.com'
-  key          'C7917B12'
-end
-
-package 'nodejs'
-
-cookbook_file "/root/.npmrc" do
-  owner   "root"
-  group   "root"
-  mode    0660
-end
-
-package 'expect'
-
-bash "npm adduser" do
-  cwd "/root"
-  user "root"
-  group "root"
-  environment ({'HOME' => '/root'})
-  code <<-EOF
-    /usr/bin/expect -c 'spawn npm adduser
-    expect "Username: "
-    send "#{node['kurento']['npm']['username']}\r"
-    expect "Password: "
-    send "#{node['kurento']['npm']['password']}\r"
-    expect "Email: (this IS public) "
-    send "#{node['kurento']['npm']['email']}\r"
-    expect eof'
-    touch /tmp/npm-adduser
-    EOF
-  cwd node['kurento']['home']
-  user node['kurento']['user']
-  group node['kurento']['group']
-  environment ({'HOME' => node['kurento']['home']})
-end
-
-# Utility to extract version from documentation
-remote_directory "#{node['kurento']['home']}/tools/jenkins-job-creator" do
-  mode        0777
-  owner       node['kurento']['user']
-  group       node['kurento']['group']
-  files_owner node['kurento']['user']
-  files_group node['kurento']['group']
-  files_mode  0775
-  source      "jenkins-job-creator"
-end
-
+# Enable NTP
 file "/etc/cron.hourly/ntpdate" do
   content "ntpdate ntp.ubuntu.com"
   mode 755

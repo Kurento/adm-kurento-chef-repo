@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: ubuntu-repo
+# Recipe:: rabbit
 #
 # Copyright 2014, Kurento
 #
@@ -17,12 +17,7 @@
 # limitations under the License.
 #
 
-ruby_block "add_kurento_repo" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
-    file.insert_line_if_no_match(/deb http:\/\/ubuntu.kurento.org repo/, "deb http://ubuntu.kurento.org repo/")
-    file.write_file  
-  end
-end  
-
-execute 'apt-get update'
+package 'rabbitmq-server'
+service 'rabbitmq-server' do
+	action [:enable , :start]
+end

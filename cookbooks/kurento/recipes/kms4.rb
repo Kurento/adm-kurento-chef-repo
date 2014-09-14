@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: ubuntu-repo
+# Recipe:: jenkins-base
 #
 # Copyright 2014, Kurento
 #
@@ -17,12 +17,16 @@
 # limitations under the License.
 #
 
-ruby_block "add_kurento_repo" do
+# Disable IPV6
+ruby_block "disable_ipv6" do
   block do
-    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
-    file.insert_line_if_no_match(/deb http:\/\/ubuntu.kurento.org repo/, "deb http://ubuntu.kurento.org repo/")
-    file.write_file  
+    file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
+    file.insert_line_if_no_match(/net.ipv6.conf.all.disable_ipv6 = 1/, "net.ipv6.conf.all.disable_ipv6 = 1")
+    file.write_file
   end
-end  
+end
 
-execute 'apt-get update'
+# Install Kurento Media Server 4.x
+package 'kurento' do
+	options "--allow-unauthenticated --force-yes"
+end

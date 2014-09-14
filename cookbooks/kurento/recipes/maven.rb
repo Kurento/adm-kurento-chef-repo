@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: ubuntu-repo
+# Recipe:: maven
 #
 # Copyright 2014, Kurento
 #
@@ -17,12 +17,16 @@
 # limitations under the License.
 #
 
-ruby_block "add_kurento_repo" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
-    file.insert_line_if_no_match(/deb http:\/\/ubuntu.kurento.org repo/, "deb http://ubuntu.kurento.org repo/")
-    file.write_file  
-  end
-end  
+# Install maven
+package 'maven'
+execute 'update-alternatives --set mvn /usr/share/maven/bin/mvn'
 
-execute 'apt-get update'
+# Add Kurento's gnupg keys
+remote_directory "#{node['kurento']['home']}/.gnupg" do
+  mode        0700
+  owner       node['kurento']['user']
+  group       node['kurento']['group']
+  files_owner node['kurento']['user']
+  files_group node['kurento']['group']
+  source      ".gnupg"
+end

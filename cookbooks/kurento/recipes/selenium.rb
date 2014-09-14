@@ -17,22 +17,7 @@
 # limitations under the License.
 #
 
-package 'xvfb'
-
-cookbook_file 'xvfb' do
-  action :create_if_missing
-  path '/etc/init.d/xvfb'
-  mode 0755
-end
-
-execute 'add xvfb to the set of init scripts' do
-  command 'update-rc.d xvfb defaults'
-end
-
-service 'xvfb' do
-  action [ :enable, :start ]
-  supports :start => true, :stop => true, :restart => true
-end
+package 'xserver-xorg'
 
 file "#{node['kurento']['home']}/.bashrc" do
   action :create
@@ -44,26 +29,28 @@ ruby_block "export_display_on_bashrc" do
     file = Chef::Util::FileEdit.new("#{node['kurento']['home']}/.bashrc")
     file.search_file_delete_line(/export DISPLAY/)
     file.write_file
-    file.insert_line_if_no_match(/export DISPLAY=0:1/, "export DISPLAY=0:1")
+    file.insert_line_if_no_match(/export DISPLAY=0:0/, "export DISPLAY=0:1")
     file.write_file
   end
 end
 
 package 'mediainfo' 
 package 'firefox'
-
 package 'libxss1'
 package 'xdg-utils'
-
-package 'wget'
 package 'libpango1.0-0'
 package 'libappindicator1'
 
-#if node['kernel']['machine'] == 'x86_64' then
-#  google_package_name = 'google-chrome-stable_current_amd64.deb'
-#else
-#  google_package_name = 'google-chrome-stable_current_i386.deb'
-#end
+# Install google chrome
+ruby_block "add_google_chrome_repo" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
+    file.insert_line_if_no_match(/deb http:\/\/dl.google.com\/linux\/chrome\/deb\/ stable main/, "deb http://dl.google.com/linux/chrome/deb/ stable main")
+    file.write_file
+  end
+end
 
-# Install Google Chrome
+# Add Google APT GPG key 
+execute 'wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - '
+execute 'apt-get update'
 package 'google-chrome-stable'

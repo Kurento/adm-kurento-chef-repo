@@ -6,5 +6,5 @@
 #
 
 include_recipe 'kurento::ubuntu-ppa'
-
-package 'kurento'
+include_recipe 'kurento::kms'
+include_recipe 'kurento::kcs'
