@@ -63,7 +63,7 @@ module Opscode
         if new_resource.strip_components > 0
           require 'tmpdir'
           tmpdir = Dir.mktmpdir
-          strip_dir = '*/' * new_resource.strip_components
+          strip_dir = '' * new_resource.strip_components
           cmd = "unzip -q -u -o #{new_resource.release_file} -d #{tmpdir}"
           cmd += " && rsync -a #{tmpdir}/#{strip_dir} #{new_resource.path}"
           cmd += " && rm -rf #{tmpdir}"
@@ -133,12 +133,12 @@ module Opscode
           when "tar_xJf"
             cmd = cherry_pick_tar_command("xJf")
           when "unzip"
-            cmd = "unzip -t #{new_resource.release_file} \"*/#{new_resource.creates}\" ; stat=$? ;"
+            cmd = "unzip -t #{new_resource.release_file} \" #{new_resource.creates}\" ; stat=$? ;"
             cmd += "if [ $stat -eq 11 ] ; then "
             cmd += "unzip  -j -o #{new_resource.release_file} \"#{new_resource.creates}\" -d #{new_resource.path} ;"
             cmd += "elif [ $stat -ne 0 ] ; then false ;"
             cmd += "else "
-            cmd += "unzip  -j -o #{new_resource.release_file} \"*/#{new_resource.creates}\" -d #{new_resource.path} ;"
+            cmd += "unzip  -j -o #{new_resource.release_file} \" #{new_resource.creates}\" -d #{new_resource.path} ;"
             cmd += "fi"
           end
         end
