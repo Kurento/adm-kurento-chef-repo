@@ -21,7 +21,7 @@
 
 include_recipe 'python'
 
-%w{python-setuptools python-dev libxml2-dev libxslt-dev zlib1g-dev}.each do |pkg|
+%w{python-setuptools python-dev libxml2-dev libxslt-dev zlib1g-dev graphviz}.each do |pkg|
 	package pkg
 end
 
