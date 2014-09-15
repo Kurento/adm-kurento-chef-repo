@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+# Install & configure xserver
 package 'xserver-xorg'
 
 file "#{node['kurento']['home']}/.bashrc" do
@@ -29,19 +30,23 @@ ruby_block "export_display_on_bashrc" do
     file = Chef::Util::FileEdit.new("#{node['kurento']['home']}/.bashrc")
     file.search_file_delete_line(/export DISPLAY/)
     file.write_file
-    file.insert_line_if_no_match(/export DISPLAY=0:0/, "export DISPLAY=0:1")
+    file.insert_line_if_no_match(/export DISPLAY=0:0/, "export DISPLAY=0:0")
     file.write_file
   end
 end
 
+# Install utils
 package 'mediainfo' 
-package 'firefox'
 package 'libxss1'
 package 'xdg-utils'
 package 'libpango1.0-0'
 package 'libappindicator1'
 
-# Install google chrome
+# Install browsers
+# Firefox
+package 'firefox'
+
+#Chrome
 ruby_block "add_google_chrome_repo" do
   block do
     file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
