@@ -18,15 +18,26 @@
 #
 
 ## Install spidermonkey js
-execute 'sudo apt-get install mercurial autoconf2.13'
-execute 'cd /tmp'
-execute 'hg clone http://hg.mozilla.org/mozilla-central spidermonkey'
-execute 'cd spidermonkey/js/src '
-execute 'autoconf2.13'
-execute './configure'
-execute 'make'
-execute 'sudo make install'
+bash "install_js_sm" do
+	user "root"
+	code <<-EOH
+		apt-get install mercurial autoconf2.13 -y
+		cd /tmp
+		hg clone http://hg.mozilla.org/mozilla-central spidermonkey
+		cd spidermonkey/js/src 
+		autoconf2.13
+		./configure
+		make
+		sudo make install
+	EOH
+end
 
 ## Install jsawk
-execute 'curl -L http://github.com/micha/jsawk/raw/master/jsawk > jsawk'
-execute 'chmod 755 jsawk && mv jsawk /usr/bin/'
+bash "install_js_awk" do
+        user "root"
+        code <<-EOH
+		cd /tmp
+		curl -L http://github.com/micha/jsawk/raw/master/jsawk > jsawk
+		chmod 755 jsawk && mv jsawk /usr/bin/
+	EOH
+end

@@ -32,10 +32,12 @@ execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.s
 end
 
 execute 'apt-get update'
-package 'apt-get -y install docker.io'
+
+package 'docker.io'
 execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
 execute "sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io"
 execute 'update-rc.d docker.io defaults'
+execute 'docker pull ubuntu'
 
 # Secure docker service. Allow access only from CI master
 execute 'iptables -F'
