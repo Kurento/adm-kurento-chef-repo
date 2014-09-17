@@ -138,8 +138,8 @@ ssh_known_hosts_entry node['kurento']['master-host']
 include_recipe 'ssh-keys'
 
 # Enable NTP
-file "/etc/cron.hourly/ntpdate" do
-  content "ntpdate ntp.ubuntu.com"
-  mode 755
-  action :create
+cookbook_file 'ntpdate' do
+  path "/etc/cron.hourly/ntpdate"
+  mode 0755
+  action :create_if_missing
 end
