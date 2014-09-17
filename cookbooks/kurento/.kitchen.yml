@@ -12,6 +12,12 @@ platforms:
   - name: ubuntu-14.04
 
 suites:
+  - name: ubuntu-dev
+    run_list:
+      - recipe[kurento::ubuntu-ppa]
+      - recipe[kurento::ubuntu-repo]
+      - recipe[kurento::kms]
+
   - name: jenkins-base
     data_bags_path: "test/integration/data_bags"
     run_list:

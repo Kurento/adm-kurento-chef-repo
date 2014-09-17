@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-ruby_block "add_kurento_repo" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/apt/sources.list")
-    file.insert_line_if_no_match(/deb http:\/\/ubuntu.kurento.org repo/, "deb http://ubuntu.kurento.org repo/")
-    file.write_file  
-  end
-end  
+include_recipe 'apt'
 
-execute 'apt-get update'
+# Kurento Media Server
+apt_repository 'kurento-dev' do
+	uri          'http://ubuntu.kurento.org'
+	distribution node['lsb']['codename']
+	components   ['main']
+	key          'http://ubuntu.kurento.org/kurento.gpg.key '
+end
