@@ -28,15 +28,6 @@ directory '/var/run/sshd' do
   recursive true
 end
 
-# Install git and configure user
-include_recipe 'git_user'
-git_user node['kurento']['user'] do
-  login     node['kurento']['user']
-  home      node['kurento']['home']
-  full_name node['kurento']['user']
-  email     node['kurento']['email']
-end
-
 # Install git-review
 package "git-review"
 
@@ -81,6 +72,15 @@ end
 
 # This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
 node.automatic_attrs[:etc][:passwd][node['kurento']['user']] = {:uid => node['kurento']['user'], :gid => node['kurento']['group'], :dir => node['kurento']['home']}
+
+# Install git and configure user
+include_recipe 'git_user'
+git_user node['kurento']['user'] do
+  login     node['kurento']['user']
+  home      node['kurento']['home']
+  full_name node['kurento']['user']
+  email     node['kurento']['email']
+end
 
 # Add user jenkins to sudoers
 ruby_block "add_jenkins_user_to_sudoers" do
