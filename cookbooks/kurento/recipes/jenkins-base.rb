@@ -95,9 +95,9 @@ ruby_block "add_jenkins_user_to_sudoers" do
     end
     file = Chef::Util::FileEdit.new("/etc/sudoers")
     if found 
-      file.search_file_replace_line(/jenkins/, "jenkins    ALL=(ALL)NOPASSWD: ALL")
+      file.search_file_replace_line(/jenkins/, "jenkins    ALL=(ALL) NOPASSWD: ALL")
     else
-      file.insert_line_if_no_match(/jenkins/, "jenkins    ALL=(ALL)NOPASSWD: ALL")
+      file.insert_line_if_no_match(/jenkins/, "jenkins    ALL=(ALL) NOPASSWD: ALL")
     end
     file.write_file
   end

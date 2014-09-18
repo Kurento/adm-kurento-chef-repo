@@ -37,7 +37,7 @@ package 'docker.io'
 execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
 execute "sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io"
 execute 'update-rc.d docker.io defaults'
-execute 'docker pull ubuntu'
+execute 'docker pull ubuntu:14.04'
 
 # Secure docker service. Allow access only from CI master
 execute 'iptables -F'
