@@ -137,7 +137,7 @@ subversion "Checkout test files" do
   repository "http://files.kurento.org/svn/kurento"
   destination "#{node['jenkins-configurer']['home']}/test-files"
   revision "HEAD"
-  user node['jenkins-configurer']['user']
-  group node['jenkins-configurer']['group']
+#  user node['jenkins-configurer']['user']
+#  group node['jenkins-configurer']['group']
   action :checkout
 end

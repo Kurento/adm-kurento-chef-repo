@@ -31,6 +31,9 @@ end
 # Install git-review
 package "git-review"
 
+# Install postpone
+package "postpone"
+
 # Install xmlstarlet
 package "xmlstarlet"
 
