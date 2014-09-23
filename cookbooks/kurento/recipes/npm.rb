@@ -54,3 +54,5 @@ bash "npm adduser" do
   group node['kurento']['group']
   environment ({'HOME' => node['kurento']['home']})
 end
+
+execute 'npm install -g bower'
