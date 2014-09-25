@@ -11,5 +11,4 @@ depends 'apt', ">= 2.0.0"
 depends 'python'
 depends 'ssh_known_hosts'
 depends 'ssh-keys'
-depends 'openssh'
 depends 'mongodb'

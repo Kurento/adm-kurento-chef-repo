@@ -22,7 +22,7 @@ execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" >
 execute "apt-get update"
 
 # Install openssh and create directory /var/run/sshd
-include_recipe 'openssh'
+package 'openssh-server'
 directory '/var/run/sshd' do
   action :create
   recursive true
