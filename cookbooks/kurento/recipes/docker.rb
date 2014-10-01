@@ -40,14 +40,14 @@ execute 'update-rc.d docker.io defaults'
 
 if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	log 'Running on a x86 architecture. Will install a more recent version of docker to avoid https://github.com/docker/docker/issues/4556'
-	execute "wget node['kurento']['docker-x86']['docker-deb-url']" do
-		not_if { ::File.exists?("node['kurento']['docker-x86']['docker-deb-url']") }
+	execute "wget #{node['kurento']['docker-x86']['docker-deb-url']}" do
+		not_if { ::File.exists?(node['kurento']['docker-x86']['docker-deb-url']) }
 	end
-	execute "wget node['kurento']['docker-x86']['dmsetup-deb-url']" do
-		not_if { ::File.exists?("node['kurento']['docker-x86']['dmsetup-deb-url']") }
+	execute "wget #{node['kurento']['docker-x86']['dmsetup-deb-url']}" do
+		not_if { ::File.exists?(node['kurento']['docker-x86']['dmsetup-deb-url']) }
 	end
-	execute "wget node['kurento']['docker-x86']['libdevmapper-deb-url']" do
-		not_if { ::File.exists?("node['kurento']['docker-x86']['libdevmapper-deb-url']") }
+	execute "wget #{node['kurento']['docker-x86']['libdevmapper-deb-url']}" do
+		not_if { ::File.exists?(node['kurento']['docker-x86']['libdevmapper-deb-url']) }
 	end
 	execute "dpkg -i *.deb && touch /tmp/docker-x86.installed" do
 		not_if { ::File.exists?("/tmp/docker-x86.installed") }
