@@ -38,7 +38,7 @@ execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
 execute "sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io"
 execute 'update-rc.d docker.io defaults'
 
-if node[:kernel][:machine] == 'x86'
+if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	log 'Running on a x86 architecture. Will install a more recent version of docker to avoid https://github.com/docker/docker/issues/4556'
 	execute "wget node['kurento']['docker-x86']['docker-deb-url']" do
 		not_if { ::File.exists?("node['kurento']['docker-x86']['docker-deb-url']") }

@@ -5,7 +5,7 @@ describe 'kurento::docker' do
 
   let(:chef_run) do
      ChefSpec::Runner.new do |node| 
-       node.automatic['kernel']['machine'] = 'x86'
+       node.automatic['kernel']['machine'] = 'i686'
      end.converge(described_recipe) 
   end
 
