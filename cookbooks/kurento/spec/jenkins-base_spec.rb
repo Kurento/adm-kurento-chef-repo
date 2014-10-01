@@ -1,12 +1,12 @@
 require 'spec_helper'
 require 'chefspec'
 
-describe 'jenkins-configurer::default' do
+describe 'kurento::jenkins-base' do
   let(:chef_run) do 
     ChefSpec::Runner.new do |node|
-      node.set['jenkins-configurer']['npm']['username'] = 'jenkins'
-      node.set['jenkins-configurer']['npm']['password'] = 'jenkins'
-      node.set['jenkins-configurer']['npm']['email'] = 'jenkins@kurento.org'
+      node.set['kurento']['npm']['username'] = 'jenkins'
+      node.set['kurento']['npm']['password'] = 'jenkins'
+      node.set['kurento']['npm']['email'] = 'jenkins@kurento.org'
     end.converge(described_recipe)
   end
 
