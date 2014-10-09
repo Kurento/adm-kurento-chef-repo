@@ -35,7 +35,22 @@ execute 'apt-get update'
 
 package 'docker.io'
 execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
-execute "sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io"
+
+if ::File.exists?("/etc/bash_completion.d/docker.io")
+	docker_completion = "/etc/bash_completion.d/docker.io"
+else
+	docker_completion = "/etc/bash_completion.d/docker"
+end
+
+ruby_block "bash completion for docker" do
+ 	block do
+  		file = Chef::Util::FileEdit.new(docker_completion)
+  		file.insert_line_if_no_match(/complete -F _docker docker/, "complete -F _docker docker")
+  		file.write_file
+	end
+end
+
+
 execute 'update-rc.d docker.io defaults'
 
 if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
@@ -49,6 +64,7 @@ if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	execute "wget #{node['kurento']['docker-x86']['libdevmapper-deb-url']}" do
 		not_if { ::File.exists?(node['kurento']['docker-x86']['libdevmapper-deb-url']) }
 	end
+	execute "echo 'debconf-set-selections debconf/frontend select noninteractive' | sudo debconf-set-selections"
 	execute "dpkg -i *.deb && touch /tmp/docker-x86.installed" do
 		not_if { ::File.exists?("/tmp/docker-x86.installed") }
 	end
