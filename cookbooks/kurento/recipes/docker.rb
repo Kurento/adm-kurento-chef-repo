@@ -50,11 +50,9 @@ ruby_block "bash completion for docker" do
 	end
 end
 
-
-execute 'update-rc.d docker.io defaults'
-
 if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	log 'Running on a x86 architecture. Will install a more recent version of docker to avoid https://github.com/docker/docker/issues/4556'
+	execute 'update-rc.d docker defaults'
 	execute "wget #{node['kurento']['docker-x86']['docker-deb-url']}" do
 		not_if { ::File.exists?(node['kurento']['docker-x86']['docker-deb-url']) }
 	end
@@ -70,6 +68,7 @@ if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	end
 	execute 'docker pull i686/ubuntu'
 else
+	execute 'update-rc.d docker.io defaults'
 	execute 'docker pull ubuntu:14.04'
 end
 
