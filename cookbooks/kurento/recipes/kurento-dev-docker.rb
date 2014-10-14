@@ -18,4 +18,4 @@
 #
 
 include_recipe 'kurento::docker'
-unclude_recipe 'kurento::chef'
+include_recipe 'kurento::chef'
