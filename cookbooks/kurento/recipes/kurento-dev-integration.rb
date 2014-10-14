@@ -17,12 +17,16 @@
 # limitations under the License.
 #
 
+include_recipe 'kurento::rabbit'
+# MongoDB server with default settings, ports 27017, 27018, 27019, 28017
+include_recipe 'mongodb::default'
+
 include_recipe 'kurento::ubuntu-ppa'
 include_recipe 'kurento::ubuntu-repo'
-include_recipe 'kurento::dpkg-build'
-include_recipe 'kurento::integration'
+include_recipe 'kurento::kms'
+include_recipe 'kurento::maven'
+include_recipe 'kurento::npm'
+include_recipe 'kurento::test-files'
 include_recipe 'kurento::selenium'
 include_recipe 'kurento::documentation'
 
-# MongoDB server with default settings, ports 27017, 27018, 27019, 28017
-include_recipe 'mongodb::default'

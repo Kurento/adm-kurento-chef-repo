@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: kurento-dev-debian
+# Recipe:: kurento-dev-media-server
 #
 # Copyright 2014, Kurento
 #
@@ -18,3 +18,4 @@
 #
 
 include_recipe 'kurento::ubuntu-ppa'
+include_recipe 'kurento::ubuntu-repo'

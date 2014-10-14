@@ -65,13 +65,13 @@ suites:
     run_list:
       - recipe[kurento::chef]
 
-  - name: kurento-docker
+  - name: kurento-dev-docker
     driver_config:
       privileged: true
     data_bags_path: "test/integration/data_bags"
     run_list:
       - recipe[kurento::jenkins-base]
-      - recipe[kurento::docker]
+      - recipe[kurento::kurento-dev-docker]
     attributes: 
       kurento:
         email: "jenkins@kurento.org"
@@ -119,4 +119,3 @@ suites:
           email: "info@kurento.org"
           username: "kurento-maintainer-team-test"
           password: "kur3nt0"
-

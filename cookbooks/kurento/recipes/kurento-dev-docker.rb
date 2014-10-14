@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: kurento-dev-debian
+# Recipe:: kurento-dev-docker
 #
 # Copyright 2014, Kurento
 #
@@ -17,4 +17,5 @@
 # limitations under the License.
 #
 
-include_recipe 'kurento::ubuntu-ppa'
+include_recipe 'kurento::docker'
+unclude_recipe 'kurento::chef'
