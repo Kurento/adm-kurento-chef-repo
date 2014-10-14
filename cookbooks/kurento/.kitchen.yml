@@ -45,6 +45,22 @@ suites:
           username: "kurento-maintainer-team-test"
           password: "kur3nt0"
 
+  - name: integration
+    data_bags_path: "test/integration/data_bags"
+    run_list:
+      - recipe[kurento::ubuntu-ppa]
+      - recipe[kurento::ubuntu-repo]
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::integration]
+    attributes: 
+      kurento:
+        email: "jenkins@kurento.org"
+        master-host: "ci.kurento.org"
+        npm:
+          email: "info@kurento.org"
+          username: "kurento-maintainer-team-test"
+          password: "kur3nt0"
+
   - name: kurento-docker
     driver_config:
       privileged: true
