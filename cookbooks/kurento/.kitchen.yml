@@ -61,6 +61,10 @@ suites:
           username: "kurento-maintainer-team-test"
           password: "kur3nt0"
 
+  - name: chef
+    run_list:
+      - recipe[kurento::chef]
+
   - name: kurento-docker
     driver_config:
       privileged: true
