@@ -61,13 +61,3 @@ subversion "test-files" do
     svn_info_args "--config-dir #{node['kurento']['home']}/.subversion"
     action :sync
 end
-
-apt_repository 'ffmpeg' do
-  uri 'http://ppa.launchpad.net/jon-severinsson/ffmpeg/ubuntu'
-  distribution node['lsb']['codename']
-  components   ['main']
-end
-
-package 'ffmpeg' do
-  options "--allow-unauthenticated --force-yes"
-end

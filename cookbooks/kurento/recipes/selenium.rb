@@ -59,3 +59,14 @@ end
 execute 'wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - '
 execute 'apt-get update'
 package 'google-chrome-stable'
+
+# Add ffmpeg
+apt_repository 'ffmpeg' do
+  uri 'http://ppa.launchpad.net/jon-severinsson/ffmpeg/ubuntu'
+  distribution node['lsb']['codename']
+  components   ['main']
+end
+
+package 'ffmpeg' do
+  options "--allow-unauthenticated --force-yes"
+end
