@@ -29,4 +29,5 @@ end
 # Install Kurento Media Server
 package 'kurento-media-server' do
 	options "--allow-unauthenticated --force-yes"
+	action :upgrade
 end
