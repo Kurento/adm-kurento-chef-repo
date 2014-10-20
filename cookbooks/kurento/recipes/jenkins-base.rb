@@ -62,6 +62,7 @@ end
 package 'software-properties-common'
 package 'python-software-properties'
 
+package 'unzip'
 
 # Create user & group jenkins
 user node['kurento']['user'] do
