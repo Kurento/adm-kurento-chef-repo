@@ -36,14 +36,14 @@ execute 'apt-get update'
 package 'docker.io'
 execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
 
-if ::File.exists?("/etc/bash_completion.d/docker.io")
-	docker_completion = "/etc/bash_completion.d/docker.io"
-else
-	docker_completion = "/etc/bash_completion.d/docker"
-end
-
 ruby_block "bash completion for docker" do
  	block do
+		if ::File.exists?("/etc/bash_completion.d/docker.io")
+			docker_completion = "/etc/bash_completion.d/docker.io"
+		else
+			docker_completion = "/etc/bash_completion.d/docker"
+		end
+
   		file = Chef::Util::FileEdit.new(docker_completion)
   		file.insert_line_if_no_match(/complete -F _docker docker/, "complete -F _docker docker")
   		file.write_file
