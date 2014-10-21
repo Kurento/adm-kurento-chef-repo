@@ -12,6 +12,12 @@ platforms:
   - name: ubuntu-14.04
 
 suites:
+  - name: docker
+    run_list:
+      - recipe[kurento::docker]
+    driver_config:
+      privileged: true
+
   - name: ubuntu-dev
     run_list:
       - recipe[kurento::ubuntu-ppa]
