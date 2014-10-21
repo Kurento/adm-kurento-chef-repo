@@ -27,8 +27,14 @@ execute "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.lis
 end
 
 # Enable remote access to docker service on port 20023
-execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
-	not_if { ::File.exists?("/tmp/docker-conf")}
+if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
+	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
+		not_if { ::File.exists?("/tmp/docker-conf")}
+	end
+else
+	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker.io" do
+		not_if { ::File.exists?("/tmp/docker-conf")}
+	end
 end
 
 execute 'apt-get update'
