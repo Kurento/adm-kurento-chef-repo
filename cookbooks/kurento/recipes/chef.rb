@@ -28,7 +28,9 @@ package 'ruby1.9.3'
 package 'ruby1.9.1-dev'
 package 'build-essential'
 
-gem_package 'berkshelf'
+gem_package 'berkshelf' do
+	timeout	3600
+end
 gem_package 'kitchen'
 gem_package 'kitchen-docker'
 gem_package 'foodcritic'
