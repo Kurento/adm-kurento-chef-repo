@@ -26,17 +26,6 @@ execute "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.lis
 	not_if { ::File.exists?("/etc/apt/sources.list.d/docker.list")}
 end
 
-# Enable remote access to docker service on port 20023
-if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
-	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
-		not_if { ::File.exists?("/tmp/docker-conf")}
-	end
-else
-	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker.io" do
-		not_if { ::File.exists?("/tmp/docker-conf")}
-	end
-end
-
 execute 'apt-get update'
 
 package 'docker.io'
@@ -58,6 +47,11 @@ end
 
 if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	log 'Running on a x86 architecture. Will install a more recent version of docker to avoid https://github.com/docker/docker/issues/4556'
+
+	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
+		not_if { ::File.exists?("/tmp/docker-conf")}
+	end
+
 	execute 'update-rc.d docker defaults'
 
 	service 'docker' do
@@ -83,6 +77,10 @@ if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 		action :nothing
 	end
 else
+	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker.io" do
+		not_if { ::File.exists?("/tmp/docker-conf")}
+	end
+
 	execute 'update-rc.d docker.io defaults'
 
 	service 'docker.io' do
