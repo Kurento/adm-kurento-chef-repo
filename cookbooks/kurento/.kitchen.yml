@@ -77,7 +77,6 @@ suites:
       dockerfile: test/integration/x86/Dockerfile
     data_bags_path: "test/integration/data_bags"
     run_list:
-      - recipe[kurento::jenkins-base]
       - recipe[kurento::kurento-dev-docker]
     attributes: 
       kurento:
@@ -93,7 +92,6 @@ suites:
       privileged: true
     data_bags_path: "test/integration/data_bags"
     run_list:
-      - recipe[kurento::jenkins-base]
       - recipe[kurento::kurento-dev-docker]
     attributes: 
       kurento:

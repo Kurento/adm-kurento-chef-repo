@@ -17,5 +17,6 @@
 # limitations under the License.
 #
 
+include_recipe 'kurento::jenkins-base'
 include_recipe 'kurento::docker'
 include_recipe 'kurento::chef'
