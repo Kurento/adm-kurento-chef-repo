@@ -132,7 +132,6 @@ suites:
 
   - name: kurento-dev-debian
     run_list:
-      - recipe[kurento::jenkins-base]
       - recipe[kurento::kurento-dev-debian]
     attributes:
       kurento:
