@@ -104,7 +104,6 @@ suites:
 
   - name: kurento-dev-integration
     run_list:
-      - recipe[kurento::jenkins-base]
       - recipe[kurento::kurento-dev-integration]
     attributes:
       kurento:
