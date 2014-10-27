@@ -47,6 +47,9 @@ package 'libappindicator1'
 package 'firefox'
 
 #Chrome
+execute "kill_chrome" do
+  command "killall -9 chromedriver"
+end
 ruby_block "add_google_chrome_repo" do
   block do
     file = Chef::Util::FileEdit.new("/etc/apt/sources.list")

@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+# Kill all media server instances
+execute "kill_kms" do
+  command "killall -9 kurento-media-server"
+end
+
+end
 # Disable IPV6
 ruby_block "disable_ipv6" do
   block do
@@ -30,4 +36,8 @@ end
 package 'kurento-media-server' do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
+end
+
+service "kurento-media-server" do
+  action :start
 end
