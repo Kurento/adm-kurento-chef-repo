@@ -28,7 +28,10 @@ end
 
 execute 'apt-get update'
 
-package 'docker.io'
+package 'docker.io' do
+	ignore_failure true
+end
+
 execute 'ln -sf /usr/bin/docker.io /usr/local/bin/docker'
 
 ruby_block "bash completion for docker" do
