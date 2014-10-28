@@ -1,11 +1,17 @@
-name "kurento-dev-debian"
+name "dev-docker"
 
-description "Configuration to build debian packages for kurento media server"
+description "Builds a jenkins-base with docker"
 
-run_list "recipe[kurento::jenkins-base]",
-		 "recipe[kurento::kurento-dev-debian]"
+run_list "recipe[kurento::kurento-dev-docker]"
 
-override_attributes     "ssh_keys" => {
+override_attributes "java" => {
+      "install_flavor" => "openjdk",
+      "jdk_version" => "7"
+    },
+    "maven" => {
+      "setup_bin" => "true"
+    },
+    "ssh_keys" => {
       "jenkins" => "jenkins"
     },
     "kurento" => {

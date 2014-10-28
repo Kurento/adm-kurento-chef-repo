@@ -1,9 +1,8 @@
-name "kurento-dev-media-server"
+name "dev-debian"
 
-description "Configuration to build kurento media server"
+description "Configuration to build debian packages for kurento media server"
 
-run_list "recipe[kurento::jenkins-base]",
-		 "recipe[kurento::kurento-dev-media-server]"
+run_list "recipe[kurento::kurento-dev-debian]"
 
 override_attributes     "ssh_keys" => {
       "jenkins" => "jenkins"
@@ -17,4 +16,3 @@ override_attributes     "ssh_keys" => {
         "email" => "info@kurento.org"
       }
     }
-

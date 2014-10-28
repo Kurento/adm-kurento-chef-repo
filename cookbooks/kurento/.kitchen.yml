@@ -137,3 +137,15 @@ suites:
           email: "info@kurento.org"
           username: "kurento-maintainer-team-test"
           password: "kur3nt0"
+
+  - name: kurento-dev-tutorial
+    run_list:
+      - recipe[kurento::kurento-dev-tutorial]
+    attributes:
+      kurento:
+        email: "jenkins@kurento.org"
+        master-host: "ci.kurento.org"
+        npm:
+          email: "info@kurento.org"
+          username: "kurento-maintainer-team-test"
+          password: "kur3nt0"

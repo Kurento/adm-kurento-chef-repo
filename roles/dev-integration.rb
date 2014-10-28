@@ -1,9 +1,8 @@
-name "kurento-dev-integration"
+name "dev-integration"
 
 description "Configuration to build kurento modules"
 
-run_list "recipe[kurento::jenkins-base]",
-		 "recipe[kurento::kurento-dev-integration]"
+run_list "recipe[kurento::kurento-dev-integration]"
 
 override_attributes     "ssh_keys" => {
       "jenkins" => "jenkins"
