@@ -20,9 +20,9 @@
 # Kill all media server instances
 execute "kill_kms" do
   command "killall -9 kurento-media-server"
+  only_if { File.exists?("/usr/bin/killall") }
 end
 
-end
 # Disable IPV6
 ruby_block "disable_ipv6" do
   block do
