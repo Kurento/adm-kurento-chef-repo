@@ -59,19 +59,7 @@ if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 		notifies :run, 'execute[docker pull i686/ubuntu]'
 	end
 
-	execute "wget #{node['kurento']['docker-x86']['docker-deb-url']}" do
-		not_if { ::File.exists?(node['kurento']['docker-x86']['docker-deb-url']) }
-	end
-	execute "wget #{node['kurento']['docker-x86']['dmsetup-deb-url']}" do
-		not_if { ::File.exists?(node['kurento']['docker-x86']['dmsetup-deb-url']) }
-	end
-	execute "wget #{node['kurento']['docker-x86']['libdevmapper-deb-url']}" do
-		not_if { ::File.exists?(node['kurento']['docker-x86']['libdevmapper-deb-url']) }
-	end
-	execute "echo 'debconf-set-selections debconf/frontend select noninteractive' | sudo debconf-set-selections"
-	execute "dpkg -i *.deb && touch /tmp/docker-x86.installed" do
-		not_if { ::File.exists?("/tmp/docker-x86.installed") }
-	end
+	execute "apt-get install -y --force-yes libdevmapper1.02.1 dmsetup docker.io"
 
 	execute 'docker pull i686/ubuntu' do
 		action :nothing
