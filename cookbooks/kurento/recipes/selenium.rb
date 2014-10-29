@@ -49,6 +49,8 @@ package 'firefox'
 #Chrome
 execute "kill_chrome" do
   command "killall -9 chromedriver"
+  only_if { File.exists?("/usr/bin/killall") }
+  ignore_failure true
 end
 ruby_block "add_google_chrome_repo" do
   block do
