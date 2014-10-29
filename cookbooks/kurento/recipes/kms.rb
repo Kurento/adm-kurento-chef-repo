@@ -21,6 +21,7 @@
 execute "kill_kms" do
   command "killall -9 kurento-media-server"
   only_if { File.exists?("/usr/bin/killall") }
+  ignore_failure true
 end
 
 # Disable IPV6
