@@ -23,6 +23,8 @@ end
 
 %w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced}.each do |tutorial|
 
+  # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
+
   directory "/tmp/tutorial-java/#{tutorial}" do
     action :create
   end
@@ -40,4 +42,8 @@ end
     supports :start => true, :stop => true
     action :enable
   end
+end
+
+directory "/tmp/tutorial-java/" do
+  action :delete
 end
