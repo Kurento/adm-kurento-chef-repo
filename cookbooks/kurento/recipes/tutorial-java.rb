@@ -18,6 +18,12 @@
 #
 
 directory "/tmp/tutorial-java/" do
+  action :delete
+  recursive true
+  only_if { File.exists?("/tmp/tutorial-java") }
+end
+
+directory "/tmp/tutorial-java/" do
   action :create
 end
 
@@ -33,17 +39,19 @@ end
     source "http://builds.kurento.org/dev/latest/#{tutorial}.zip"
   end
 
+  execute "unzip_#{tutorial}" do
+    cwd "/tmp/tutorial-java/#{tutorial}"
+    command "unzip #{tutorial}.zip; chmod u+x install.sh"
+  end
+
   execute "install_#{tutorial}" do
     cwd "/tmp/tutorial-java/#{tutorial}"
-    command "unzip #{tutorial}.zip; chmod u+x install.sh; ./install.sh"
+    command "./install.sh"
+    returns [0, 1]
   end
 
   service "#{tutorial}" do
     supports :start => true, :stop => true
     action :enable
   end
-end
-
-directory "/tmp/tutorial-java/" do
-  action :delete
 end
