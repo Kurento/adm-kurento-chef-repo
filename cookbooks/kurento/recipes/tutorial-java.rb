@@ -29,8 +29,13 @@ end
 
 %w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced}.each do |tutorial|
 
-  # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
+  if FileTest.file?("/etc/init.d/#{tutorial}")
+    service tutorial do
+      action :stop
+    end
+  end
 
+  # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
   directory "/tmp/tutorial-java/#{tutorial}" do
     action :create
   end
@@ -47,11 +52,10 @@ end
   execute "install_#{tutorial}" do
     cwd "/tmp/tutorial-java/#{tutorial}"
     command "./install.sh"
-    returns [0, 1]
   end
 
-  service "#{tutorial}" do
-    supports :start => true, :stop => true
+  service tutorial do
+    supports :start => true, :stop => true, :restart => true
     action :enable
   end
 end
