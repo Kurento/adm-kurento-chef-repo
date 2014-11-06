@@ -35,7 +35,7 @@ end
   end
 
   remote_file "/tmp/tutorial-java/#{tutorial}/#{tutorial}.zip" do
-    source "http://builds.kurento.org/dev/latest/#{tutorial}.zip"
+    source "http://builds.kurento.org/dev/latest/tutorials/#{tutorial}.zip"
   end
 
   execute "unzip_#{tutorial}" do
