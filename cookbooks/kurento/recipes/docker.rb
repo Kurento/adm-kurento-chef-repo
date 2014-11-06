@@ -51,13 +51,13 @@ end
 if ['i386', 'i486', 'i586', 'i686', 'x86'].include? node[:kernel][:machine]
 	log 'Running on a x86 architecture. Will install a more recent version of docker to avoid https://github.com/docker/docker/issues/4556'
 
-	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker" do
+	execute "echo DOCKER_OPTS=\\\"-H tcp://0.0.0.0:20023 -H unix:///var/run/docker.sock\\\" > /etc/default/docker.io" do
 		not_if { ::File.exists?("/tmp/docker-conf")}
 	end
 
-	execute 'update-rc.d docker defaults'
+	execute 'update-rc.d docker.io defaults'
 
-	service 'docker' do
+	service 'docker.io' do
 		action :start
 		notifies :run, 'execute[docker pull i686/ubuntu]'
 	end
