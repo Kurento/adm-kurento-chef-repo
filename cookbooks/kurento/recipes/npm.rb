@@ -56,3 +56,4 @@ bash "npm adduser" do
 end
 
 execute 'npm install -g bower'
+execute 'npm install -g npm'
