@@ -27,7 +27,7 @@ end
 
 execute "install_kcs" do
   cwd "/tmp/kcs"
-  command "unzip kurento-control-server.zip; ./bin/install.sh"
+  command "unzip -o kurento-control-server.zip; ./bin/install.sh"
 end
 
 service "kurento-control-server" do

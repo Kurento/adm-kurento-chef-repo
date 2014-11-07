@@ -24,6 +24,7 @@ package 'subversion'
 directory "#{node['kurento']['home']}/test-files" do
     action :delete
     recursive true
+    ignore_failure true
 end
 subversion "test-files" do
     repository "http://files.kurento.org/svn/kurento"
