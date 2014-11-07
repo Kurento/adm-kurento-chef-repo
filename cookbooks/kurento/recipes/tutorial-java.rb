@@ -40,7 +40,7 @@ end
 
   execute "unzip_#{tutorial}" do
     cwd "/tmp/tutorial-java/#{tutorial}"
-    command "unzip #{tutorial}.zip; chmod u+x install.sh"
+    command "unzip -o #{tutorial}.zip; chmod u+x install.sh"
   end
 
   execute "install_#{tutorial}" do
