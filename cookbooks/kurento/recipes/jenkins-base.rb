@@ -132,7 +132,7 @@ cookbook_file 'jenkins.crt' do
   action :create_if_missing
 end
 
-# Disable strict host checkin. Accepts keys from all hosts
+# Disable strict host checking. Accepts keys from all hosts
 if not ::File.exists?("#{node['kurento']['home']}/.ssh/config") then
   file "#{node['kurento']['home']}/.ssh/config" do
     content "StrictHostKeyChecking no"
