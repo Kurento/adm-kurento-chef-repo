@@ -18,6 +18,7 @@
 #
 
 package 'rabbitmq-server'
+execute 'rabbitmq-plugins enable rabbitmq_management'
 service 'rabbitmq-server' do
 	action [:enable , :start]
 end
