@@ -18,21 +18,34 @@
 #
 
 # Install & configure xserver
-package 'xserver-xorg'
+#package 'xserver-xorg'
+#
+#file "#{node['kurento']['home']}/.bashrc" do
+#  action :create
+#  not_if { ::File.exists?("#{node['kurento']['home']}/.bashrc")}
+#end
+#
+#ruby_block "export_display_on_bashrc" do
+#  block do
+#    file = Chef::Util::FileEdit.new("#{node['kurento']['home']}/.bashrc")
+#    file.search_file_delete_line(/export DISPLAY/)
+#    file.write_file
+#    file.insert_line_if_no_match(/export DISPLAY=0:0/, "export DISPLAY=0:0")
+#    file.write_file
+#  end
+#end
 
-file "#{node['kurento']['home']}/.bashrc" do
-  action :create
-  not_if { ::File.exists?("#{node['kurento']['home']}/.bashrc")}
+# Install xvfb
+package 'xvfb'
+
+cookbook_file 'xvfb' do
+  path "/etc/init.d/xvfb"
+  mode '0755'
+  action :create_if_missing
 end
 
-ruby_block "export_display_on_bashrc" do
-  block do
-    file = Chef::Util::FileEdit.new("#{node['kurento']['home']}/.bashrc")
-    file.search_file_delete_line(/export DISPLAY/)
-    file.write_file
-    file.insert_line_if_no_match(/export DISPLAY=0:0/, "export DISPLAY=0:0")
-    file.write_file
-  end
+service 'xvfb' do
+	action [:enable , :start]
 end
 
 # Install utils
