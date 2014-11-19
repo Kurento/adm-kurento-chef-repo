@@ -39,6 +39,36 @@ package 'kurento-media-server' do
 	action :upgrade
 end
 
+# Install Kurento Modules
+package 'kms-background-extractor' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-chroma' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-crowddetector' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-face-segmentator' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-markerdetector' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-platedetector' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+package 'kms-pointerdetector' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
+
 service "kurento-media-server" do
   action :start
 end
