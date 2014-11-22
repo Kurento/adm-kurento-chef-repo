@@ -36,6 +36,7 @@ package 'kms-pointerdetector' do
 	action :upgrade
 end
 
+# Install tutorials
 directory "/tmp/tutorial-java/" do
   action :delete
   recursive true
@@ -46,7 +47,7 @@ directory "/tmp/tutorial-java/" do
   action :create
 end
 
-%w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced kurento-pointerdetector kurento-chroma kurento-crowddetector kurento-platedetector}.each do |tutorial|
+%w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced kurento-pointerdetector kurento-chroma kurento-platedetector}.each do |tutorial|
 
   # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
   directory "/tmp/tutorial-java/#{tutorial}" do
@@ -68,6 +69,44 @@ end
   end
 
   service tutorial do
+    supports :start => true, :stop => true, :restart => true
+    action :enable
+  end
+end
+
+# Install demos
+directory "/tmp/kurento-demo/" do
+  action :delete
+  recursive true
+  only_if { File.exists?("/tmp/kurento-demo") }
+end
+
+directory "/tmp/kurento-demo/" do
+  action :create
+end
+
+%w{kurento-crowddetector}.each do |demo|
+
+  # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
+  directory "/tmp/kurento-demo/#{demo}" do
+    action :create
+  end
+
+  remote_file "/tmp/kurento-demo/#{demo}/#{demo}.zip" do
+    source "http://builds.kurento.org/dev/latest/demos/#{demo}.zip"
+  end
+
+  execute "unzip_#{demo}" do
+    cwd "/tmp/kurento-demo/#{demo}"
+    command "unzip -o #{demo}.zip; chmod u+x install.sh"
+  end
+
+  execute "install_#{demo}" do
+    cwd "/tmp/kurento-demo/#{demo}"
+    command "./install.sh"
+  end
+
+  service demo do
     supports :start => true, :stop => true, :restart => true
     action :enable
   end
