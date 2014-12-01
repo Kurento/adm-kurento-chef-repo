@@ -1,0 +1,4 @@
+{ 
+   "registry": "http://bower.kurento.org:5678" ,
+   "strict-ssl": false
+}

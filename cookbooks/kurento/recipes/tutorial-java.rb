@@ -17,25 +17,6 @@
 # limitations under the License.
 #
 
-
-# Install required kms modules
-package 'kms-chroma' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-crowddetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-platedetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-pointerdetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-
 # Install tutorials
 directory "/tmp/tutorial-java/" do
   action :delete

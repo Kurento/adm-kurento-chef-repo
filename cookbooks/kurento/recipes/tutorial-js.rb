@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: kurento-dev-tutorial
+# Recipe:: tutorial-js
 #
 # Copyright 2014, Kurento
 #
@@ -17,12 +17,23 @@
 # limitations under the License.
 #
 
-include_recipe 'kurento::jenkins-base'
-include_recipe 'kurento::ubuntu-ppa'
-include_recipe 'kurento::ubuntu-repo'
-include_recipe 'kurento::kms'
-include_recipe 'kurento::kms-modules'
-include_recipe 'kurento::maven'
-include_recipe 'kurento::tutorial-java'
-include_recipe 'kurento::npm'
-include_recipe 'kurento::tutorial-js'
+# Install packages
+package 'apache2'
+
+# Install demos
+directory "/tmp/kurento-tutorial-js/" do
+  action :delete
+  recursive true
+  only_if { File.exists?("/tmp/kurento-tutorial-js") }
+end
+
+remote_file "/tmp/kurento-tutorial-js.zip" do
+  source "http://builds.kurento.org/dev/latest/tutorials/kurento-tutorial-js.zip"
+end
+
+execute "unzip_kurento-tutorial-js" do
+  cwd "/tmp"
+  command "unzip -o kurento-tutorial-js.zip -d /var/www/html"
+end
+
+

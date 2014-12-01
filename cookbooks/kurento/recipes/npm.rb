@@ -57,3 +57,12 @@ end
 
 execute 'npm install -g bower'
 execute 'npm install -g npm'
+
+# Configure kurento's private bower registry
+cookbook_file 'bowerrc' do
+  owner node['kurento']['user']
+  group node['kurento']['group']
+  path "#{node['kurento']['home']}/.bowerrc"
+  mode 0644
+  action :create_if_missing
+end
