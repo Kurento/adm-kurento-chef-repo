@@ -37,6 +37,10 @@ package 'kms-pointerdetector' do
 end
 
 # Private
+package 'kms-plumberendpoint' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade	
+end
 package 'kms-background-extractor' do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
