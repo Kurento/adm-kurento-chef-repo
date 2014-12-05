@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: kurento-dev-integration
+# Recipe:: kurento-module-creator
 #
 # Copyright 2014, Kurento
 #
@@ -17,17 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe 'kurento::jenkins-base'
-include_recipe 'kurento::rabbit'
-include_recipe 'mongodb::default'
-include_recipe 'kurento::ubuntu-ppa'
-include_recipe 'kurento::ubuntu-repo'
-include_recipe 'kurento::kms'
-include_recipe 'kurento::kms-modules'
-include_recipe 'kurento::kcs'
-include_recipe 'kurento::maven'
-include_recipe 'kurento::npm'
-include_recipe 'kurento-module-creator'
-include_recipe 'kurento::test-files'
-include_recipe 'kurento::selenium'
-include_recipe 'kurento::documentation'
+# Install kurento-module-creator
+package 'kurento-module-creator' do
+	options "--allow-unauthenticated --force-yes"
+	action :upgrade
+end
