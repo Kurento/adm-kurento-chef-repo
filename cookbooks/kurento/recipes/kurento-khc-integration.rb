@@ -20,3 +20,4 @@
 include_recipe 'kurento::jenkins-base'
 include_recipe 'kurento::rabbit'
 include_recipe 'kurento::maven'
+include_recipe 'kurento::khc'
