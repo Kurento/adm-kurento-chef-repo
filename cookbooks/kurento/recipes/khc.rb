@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-package 'avconv' do
+package 'libav-tools' do
 	options "--force-yes"
 	action :upgrade
 end
