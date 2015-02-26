@@ -33,38 +33,15 @@ ruby_block "disable_ipv6" do
   end
 end
 
-# Install Kurento Media Server
-package 'kurento-media-server' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
+version = node['kurento']['kurento-media-server']['package-version']
+if Gem::Version.new(version) >= Gem::Version.new('6.0') 
+	suffix = "-#{version}" 
+else
+	suffix = ""
 end
 
-# Install Kurento Modules
-package 'kms-background-extractor' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-chroma' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-crowddetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-face-segmentator' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-markerdetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-platedetector' do
-	options "--allow-unauthenticated --force-yes"
-	action :upgrade
-end
-package 'kms-pointerdetector' do
+# Install Kurento Media Server
+package "kurento-media-server#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end

@@ -22,7 +22,7 @@ directory "/tmp/kcs/" do
 end
 
 remote_file "/tmp/kcs/kurento-control-server.zip" do
-  source "http://builds.kurento.org/dev/latest/kurento-control-server.zip"
+  source "#{node['kurento']['kurento-control-server']['download-url']}"
 end
 
 execute "install_kcs" do

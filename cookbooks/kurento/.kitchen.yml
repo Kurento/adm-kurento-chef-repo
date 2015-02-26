@@ -3,7 +3,13 @@ driver:
   name: docker
 driver_config:
   use_sudo: false
-  provision_command: curl -L https://www.getchef.com/chef/install.sh | bash
+  provision_command: 
+    - curl -L https://www.getchef.com/chef/install.sh | bash
+    - locale-gen en_US.UTF-8
+    - echo 'export LANG="en_US.UTF-8"' >> /etc/profile
+    - echo 'export LANGUAGE="en_US:en"' >> /etc/profile
+    - echo 'export LC_ALL="en_US.UTF-8"' >> /etc/profile
+    - export LANG="en_US.UTF-8" && export LANGUAGE="en_US:en" && export LC_ALL="en_US.UTF-8"
 
 provisioner:
   name: chef_zero
@@ -18,11 +24,25 @@ suites:
     driver_config:
       privileged: true
 
-  - name: ubuntu-dev
+  - name: kurento-media-server-dev
     run_list:
       - recipe[kurento::ubuntu-ppa]
       - recipe[kurento::ubuntu-repo]
       - recipe[kurento::kms]
+    attributes:
+      kurento:
+        kurento-media-server:
+          package-version: '6.0'
+
+  - name: kurento-media-server-release
+    run_list:
+      - recipe[kurento::ubuntu-ppa]
+      - recipe[kurento::ubuntu-repo]
+      - recipe[kurento::kms]
+    attributes:
+      kurento:
+        kurento-media-server:
+          package-version: '5.0'
 
   - name: npm
     data_bags_path: "test/integration/data_bags"
