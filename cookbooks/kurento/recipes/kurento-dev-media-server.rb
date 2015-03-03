@@ -20,3 +20,5 @@
 include_recipe 'kurento::jenkins-base'
 include_recipe 'kurento::ubuntu-ppa'
 include_recipe 'kurento::ubuntu-repo'
+include_recipe 'kurento::maven'
+include_recipe 'kurento::npm'
