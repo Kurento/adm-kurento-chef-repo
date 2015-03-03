@@ -155,6 +155,16 @@ end
 ssh_known_hosts_entry node['kurento']['master-host']
 include_recipe 'ssh-keys'
 
+# Add Kurento's gnupg keys
+remote_directory "#{node['kurento']['home']}/.gnupg" do
+  mode        0700
+  owner       node['kurento']['user']
+  group       node['kurento']['group']
+  files_owner node['kurento']['user']
+  files_group node['kurento']['group']
+  source      ".gnupg"
+end
+
 # Enable NTP
 package 'cron'
 cookbook_file 'ntpdate' do
