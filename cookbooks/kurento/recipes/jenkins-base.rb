@@ -17,6 +17,15 @@
 # limitations under the License.
 #
 
+# Update hostname in /etc/host to allow name resolution in openstack
+ruby_block "update_hosts" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/hosts")
+    file.insert_line_if_no_match(/#{node['hostname']}/, "127.0.0.1   #{node['hostname']}")
+    file.write_file
+  end
+end
+
 # Configure Kurento's apt proxy
 execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
 execute "apt-get update"
