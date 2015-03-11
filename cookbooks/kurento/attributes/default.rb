@@ -7,6 +7,7 @@ default['kurento']['docker-x86']['docker-deb-url'] = "http://ftp.es.debian.org/d
 default['kurento']['docker-x86']['libdevmapper-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/dmsetup_1.02.90-2_i386.deb"
 default['kurento']['docker-x86']['dmsetup-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/libdevmapper1.02.1_1.02.90-2_i386.deb"
 default['kurento']['kurento-control-server']['download-url'] = 'http://builds.kurento.org/release/stable/kurento-control-server.zip'
+default['kurento']['kurento-module-creator']['package-version'] = '3.0'
 default['kurento']['kurento-media-server']['package-version'] = '5.0'
 default['kurento']['kurento-media-server']['repositories']['release'] = true
 default['kurento']['kurento-media-server']['repositories']['development'] = false

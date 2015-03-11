@@ -17,8 +17,16 @@
 # limitations under the License.
 #
 
+# Version 4 and above include the version in the package name
+version = node['kurento']['kurento-module-creator']['package-version']
+if Gem::Version.new(version) >= Gem::Version.new('4.0') 
+	suffix = "-#{version}" 
+else
+	suffix = ""
+end
+
 # Install kurento-module-creator
-package 'kurento-module-creator' do
+package "kurento-module-creator#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
