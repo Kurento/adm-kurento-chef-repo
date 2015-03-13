@@ -17,9 +17,16 @@
 # limitations under the License.
 #
 
+version = node['kurento']['kurento-media-server']['package-version']
+if Gem::Version.new(version) >= Gem::Version.new('6.0') 
+  suffix = "-#{version}" 
+else
+  suffix = ""
+end
+
 # Kill all media server instances
 execute "kill_kms" do
-  command "killall -9 kurento-media-server"
+  command "killall -9 kurento-media-server#{suffix}"
   only_if { File.exists?("/usr/bin/killall") }
   ignore_failure true
 end
@@ -33,19 +40,12 @@ ruby_block "disable_ipv6" do
   end
 end
 
-version = node['kurento']['kurento-media-server']['package-version']
-if Gem::Version.new(version) >= Gem::Version.new('6.0') 
-	suffix = "-#{version}" 
-else
-	suffix = ""
-end
-
 # Install Kurento Media Server
 package "kurento-media-server#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
 
-service "kurento-media-server" do
+service "kurento-media-server#{suffix}" do
   action :start
 end
