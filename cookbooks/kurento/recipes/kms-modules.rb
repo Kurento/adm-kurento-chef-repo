@@ -18,38 +18,46 @@
 #
 
 # Install required kms modules
+
+version = node['kurento']['kurento-media-server']['package-version']
+if Gem::Version.new(version) >= Gem::Version.new('6.0') 
+  suffix = "-#{version}" 
+else
+  suffix = ""
+end
+
 # Public
-package 'kms-chroma' do
+package "kms-chroma#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
-package 'kms-crowddetector' do
+package "kms-crowddetector#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
-package 'kms-platedetector' do
+package "kms-platedetector#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
-package 'kms-pointerdetector' do
+package "kms-pointerdetector#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
 
 # Private
-package 'kms-plumberendpoint' do
+package "kms-plumberendpoint#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade	
 end
-package 'kms-background-extractor' do
+package "kms-background-extractor#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
-package 'kms-face-segmentator' do
+package "kms-face-segmentator#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
-package 'kms-markerdetector' do
+package "kms-markerdetector#{suffix}" do
 	options "--allow-unauthenticated --force-yes"
 	action :upgrade
 end
