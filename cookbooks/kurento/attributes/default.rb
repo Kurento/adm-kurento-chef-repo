@@ -6,6 +6,20 @@ default['kurento']['master-host'] = "ci.acme.org"
 default['kurento']['docker-x86']['docker-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/d/docker.io/docker.io_1.2.0~dfsg1-1_i386.deb"
 default['kurento']['docker-x86']['libdevmapper-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/dmsetup_1.02.90-2_i386.deb"
 default['kurento']['docker-x86']['dmsetup-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/libdevmapper1.02.1_1.02.90-2_i386.deb"
+default['kurento']['tutorial']['base-url'] = "http://builds.kurento.org/dev/latest/tutorials"
+default['kurento']['tutorial']['packages'] = 
+	[
+		'kurento-hello-world',
+		'kurento-magic-mirror',
+		'kurento-one2many-call',
+		'kurento-one2one-call',
+		'kurento-one2one-call-advanced'
+	]
+default['kurento']['demo']['base-url'] = "http://builds.kurento.org/dev/latest/demos"
+default['kurento']['demo']['packages'] = 
+	[
+		'kurento-crowddetector'
+	]
 default['kurento']['kurento-control-server']['download-url'] = 'http://builds.kurento.org/release/stable/kurento-control-server.zip'
 default['kurento']['kurento-module-creator']['package-version'] = '3.0'
 default['kurento']['kurento-media-server']['package-version'] = '5.0'

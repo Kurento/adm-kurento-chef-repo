@@ -40,6 +40,10 @@ ruby_block "disable_ipv6" do
   end
 end
 
+# Fix locales if needed
+execute 'locale-gen es_ES es_ES.UTF-8'
+execute 'dpkg-reconfigure locales'
+
 # Install Kurento Media Server
 package "kurento-media-server#{suffix}" do
 	options "--allow-unauthenticated --force-yes"

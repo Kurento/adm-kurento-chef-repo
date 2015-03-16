@@ -13,7 +13,33 @@ platforms:
     driver:
       box: opscode-ubuntu-14.04-i386
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04-i386_chef-provisionerless.box
+  - name: ubuntu-14.04
+    driver:
+      box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 suites:
   - name: docker
     run_list:
       - recipe[kurento::docker]
+  - name: kurento-demo
+    excludes: 
+      - ubuntu-14.04-i386
+    run_list:
+      - recipe[kurento::kurento-demo]
+    attributes:
+      kurento:
+        demo:
+          packages: []
+  - name: kurento-demo-6
+    excludes: 
+      - ubuntu-14.04-i386
+    run_list:
+      - recipe[kurento::kurento-demo]
+    attributes:
+      kurento:
+        demo:
+          packages: []
+        kurento-media-server:
+          package-version: '6.0'
+        kurento-module-creator:
+          package-version: '4.0'
+        

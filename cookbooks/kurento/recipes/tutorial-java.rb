@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+package 'unzip'
+
 # Install tutorials
 directory "/tmp/tutorial-java/" do
   action :delete
@@ -28,7 +30,8 @@ directory "/tmp/tutorial-java/" do
   action :create
 end
 
-%w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced kurento-pointerdetector kurento-chroma kurento-platedetector}.each do |tutorial|
+node['kurento']['tutorial']['packages'].each do |tutorial|
+#%w{kurento-group-call kurento-hello-world kurento-magic-mirror kurento-one2many-call kurento-one2one-call kurento-one2one-call-advanced kurento-pointerdetector kurento-chroma kurento-platedetector}.each do |tutorial|
 
   # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
   directory "/tmp/tutorial-java/#{tutorial}" do
@@ -41,17 +44,17 @@ end
 
   execute "unzip_#{tutorial}" do
     cwd "/tmp/tutorial-java/#{tutorial}"
-    command "unzip -o #{tutorial}.zip; chmod u+x install.sh"
+    command "unzip -o #{tutorial}.zip; chmod u+x bin/install.sh"
   end
 
   execute "install_#{tutorial}" do
-    cwd "/tmp/tutorial-java/#{tutorial}"
+    cwd "/tmp/tutorial-java/#{tutorial}/bin"
     command "./install.sh"
   end
 
   service tutorial do
-    supports :start => true, :stop => true, :restart => true
-    action :enable
+    supports :status => true, :start => true, :stop => true, :restart => true
+    action [ :enable, :start ]
   end
 end
 
@@ -66,7 +69,8 @@ directory "/tmp/kurento-demo/" do
   action :create
 end
 
-%w{kurento-crowddetector}.each do |demo|
+node['kurento']['demo']['packages'].each do |demo|
+#%w{kurento-crowddetector}.each do |demo|
 
   # TODO: Check for version in version property file, and re-install only if a new version is published. This way this recipe would be idempotent
   directory "/tmp/kurento-demo/#{demo}" do
@@ -89,6 +93,6 @@ end
 
   service demo do
     supports :start => true, :stop => true, :restart => true
-    action :enable
+    action [ :enable, :start ]
   end
 end
