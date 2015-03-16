@@ -29,7 +29,9 @@ end
 # Configure Kurento's apt proxy
 execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
 execute "apt-get update"
-execute "apt-get upgrade --force-yes -y --fix-missing"
+execute "apt-get upgrade --force-yes -y --fix-missing" do
+  environment "DEBIAN_FRONTEND" => "noninteractive"
+end
 
 # Install openssh and create directory /var/run/sshd
 package 'openssh-server'
