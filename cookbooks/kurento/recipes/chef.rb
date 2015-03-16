@@ -19,8 +19,9 @@
 
 execute 'apt-get update'
 
+execute "wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.3.6-1_amd64.deb"
 #execute "wget http://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.3.0-1_amd64.deb"
-#execute "dpkg -i chefdk_0.3.0-1_amd64.deb"
+execute "dpkg -i chefdk_0.3.6-1_amd64.deb"
 
 package 'ruby1.9.3'
 
@@ -30,10 +31,21 @@ package 'build-essential'
 
 gem_package 'berkshelf' do
 	timeout	3600
+	version "~> 3.2.3"
 end
 
-gem_package 'kitchen'
-gem_package 'kitchen-docker'
-gem_package 'foodcritic'
-gem_package 'chefspec'
-gem_package 'rspec_junit_formatter'
+gem_package 'test-kitchen' do
+	version "~> 1.3.1"
+end
+gem_package 'kitchen-docker' do
+	version "~>	1.7.0"
+end
+gem_package 'foodcritic' do
+	version "~> 4.0.0"
+end
+gem_package 'chefspec' do
+	version "~> 3.4.0"
+end
+gem_package 'rspec_junit_formatter' do
+	version "~> 0.1.6"
+end

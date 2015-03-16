@@ -42,4 +42,11 @@ suites:
           package-version: '6.0'
         kurento-module-creator:
           package-version: '4.0'
-        
+  - name: chef
+    excludes:
+      - ubuntu-14.04-i386
+    driver:
+      customize:
+        memory: 2048
+    run_list:
+      - recipe[kurento::chef]
