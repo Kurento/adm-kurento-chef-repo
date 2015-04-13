@@ -80,7 +80,7 @@ package 'google-chrome-stable'
 
 # Add ffmpeg
 apt_repository 'ffmpeg' do
-  uri 'http://ppa.launchpad.net/jon-severinsson/ffmpeg/ubuntu'
+  uri 'http://ppa.launchpad.net/mc3man/trusty-media/ubuntu'
   distribution node['lsb']['codename']
   components   ['main']
 end

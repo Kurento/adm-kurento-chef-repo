@@ -29,6 +29,7 @@ suites:
       kurento:
         demo:
           packages: []
+
   - name: kurento-demo-6
     excludes: 
       - ubuntu-14.04-i386
@@ -42,6 +43,7 @@ suites:
           package-version: '6.0'
         kurento-module-creator:
           package-version: '4.0'
+
   - name: chef
     excludes:
       - ubuntu-14.04-i386
@@ -50,3 +52,12 @@ suites:
         memory: 2048
     run_list:
       - recipe[kurento::chef]
+  - name: selenium
+    excludes:
+      - ubuntu-14.04-i386
+    driver:
+      customize:
+        memory: 2048
+    run_list:
+      - recipe[apt]
+      - recipe[kurento::selenium]

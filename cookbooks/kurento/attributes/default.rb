@@ -6,7 +6,7 @@ default['kurento']['master-host'] = "ci.acme.org"
 default['kurento']['docker-x86']['docker-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/d/docker.io/docker.io_1.2.0~dfsg1-1_i386.deb"
 default['kurento']['docker-x86']['libdevmapper-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/dmsetup_1.02.90-2_i386.deb"
 default['kurento']['docker-x86']['dmsetup-deb-url'] = "http://ftp.es.debian.org/debian/pool/main/l/lvm2/libdevmapper1.02.1_1.02.90-2_i386.deb"
-default['kurento']['tutorial']['base-url'] = "http://builds.kurento.org/dev/latest/tutorials"
+default['kurento']['tutorial']['base-url'] = "http://builds.kurento.org/dev/release-5.1/latest/tutorials"
 default['kurento']['tutorial']['packages'] = 
 	[
 		'kurento-hello-world',
