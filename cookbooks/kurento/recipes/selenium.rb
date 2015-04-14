@@ -79,12 +79,6 @@ execute 'apt-get update'
 package 'google-chrome-stable'
 
 # Add ffmpeg
-
-# Remove first old repository if present
-apt_repository 'ffmpeg' do
-  action :remove
-end
-
 apt_repository 'ffmpeg' do
   uri 'http://ppa.launchpad.net/mc3man/trusty-media/ubuntu'
   distribution node['lsb']['codename']
