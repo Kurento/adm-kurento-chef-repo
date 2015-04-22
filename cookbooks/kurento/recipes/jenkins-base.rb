@@ -128,14 +128,7 @@ directory "#{node['kurento']['home']}/.ssh" do
   action :create
 end
 
-file "#{node['kurento']['home']}/.ssh/id_rsa" do
-  owner node['kurento']['user']
-  group node['kurento']['group']
-  content data_bag_item('users', 'jenkins')['ssh_private_key']
-  mode 0600
-  action :create_if_missing
-end
-
+# Needed for reprepro
 cookbook_file 'jenkins.crt' do
   owner node['kurento']['user']
   group node['kurento']['group']
