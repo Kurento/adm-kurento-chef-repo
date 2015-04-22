@@ -42,7 +42,15 @@ ruby_block 'set jenkins.war location' do
       file.search_file_replace_line(/JENKINS_WAR/, "JENKINS_WAR=/var/lib/$NAME/$NAME.war")
       file.write_file
     end
-  end
+end
+
+ruby_block 'set jenkins.war location' do
+    block do
+      file = Chef::Util::FileEdit.new('/etc/default/jenkins')
+      file.search_file_replace_line(/JENKINS_ARGS/, "JENKINS_ARGS=\"--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=$PREFIX\"")
+      file.write_file
+    end
+end
 
 user 'jenkins' do
 	home '/var/lib/jenkins'
