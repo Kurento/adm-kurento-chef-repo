@@ -27,7 +27,7 @@ package 'jenkins' do
 	version '1.609'
 end
 
-user 'jenkins'
+user 'jenkins' do
 	home '/var/lib/jenkins'
 end
 
