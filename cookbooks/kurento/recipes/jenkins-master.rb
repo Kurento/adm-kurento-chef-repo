@@ -19,7 +19,7 @@
 
 apt_repository 'jenkins' do
   uri 'http://pkg.jenkins-ci.org/debian'
-  distribution 'binary'
+  distribution 'binary/'
 end
 
 package 'jenkins' do
