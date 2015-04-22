@@ -22,7 +22,10 @@ apt_repository 'jenkins' do
   distribution 'binary/'
 end
 
-package 'jenkins'
+package 'jenkins' do
+  action :install
+  options "--allow-unauthenticated"
+end
 
 user 'jenkins' do
 	home '/var/lib/jenkins'
