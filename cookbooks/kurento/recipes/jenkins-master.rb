@@ -18,9 +18,8 @@
 #
 
 apt_repository 'jenkins' do
-  uri 'http://pkg.jenkins-ci.org/debian binary/'
-  distribution node['lsb']['codename']
-  components   ['main']
+  uri 'http://pkg.jenkins-ci.org/debian'
+  distribution 'binary'
 end
 
 package 'jenkins' do
