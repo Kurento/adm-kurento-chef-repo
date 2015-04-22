@@ -22,9 +22,7 @@ apt_repository 'jenkins' do
   distribution 'binary/'
 end
 
-package 'jenkins' do
-	version '1.609'
-end
+package 'jenkins'
 
 user 'jenkins' do
 	home '/var/lib/jenkins'
