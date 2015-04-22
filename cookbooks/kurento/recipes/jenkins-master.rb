@@ -22,10 +22,27 @@ apt_repository 'jenkins' do
   distribution 'binary/'
 end
 
+package 'wget'
+
 package 'jenkins' do
   action :install
   options "--allow-unauthenticated"
 end
+
+execute 'checkout-jenkins-war' do 
+  cwd '/var/lib/jenkins'
+  user 'jenkins'
+  group 'jenkins'
+  command 'wget http://mirrors.jenkins-ci.org/war/1.609/jenkins.war'
+end
+
+ruby_block 'set jenkins.war location' do
+    block do
+      file = Chef::Util::FileEdit.new('/etc/default/jenkins')
+      file.search_file_replace_line(/JENKINS_WAR/, "JENKINS_WAR=/var/lib/$NAME/$NAME.war")
+      file.write_file
+    end
+  end
 
 user 'jenkins' do
 	home '/var/lib/jenkins'
@@ -41,6 +58,8 @@ directory "/var/lib/jenkins/.ssh" do
   mode 0755
   action :create
 end
+
+include_recipe 'ssh-keys'
 
 file "/var/lib/jenkins/.ssh/id_rsa" do
   owner 'jenkins'
