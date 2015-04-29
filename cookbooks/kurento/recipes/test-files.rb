@@ -36,4 +36,6 @@ subversion "test-files" do
     svn_info_args "--config-dir #{node['kurento']['home']}/.subversion"
     action :sync
     timeout 3600
+    retries 3
+    retry_delay 120
 end
