@@ -31,19 +31,6 @@ execute "kill_kms" do
   ignore_failure true
 end
 
-# Disable IPV6
-ruby_block "disable_ipv6" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
-    file.insert_line_if_no_match(/net.ipv6.conf.all.disable_ipv6 = 1/, "net.ipv6.conf.all.disable_ipv6 = 1")
-    file.write_file
-  end
-end
-
-# Fix locales if needed
-execute 'locale-gen es_ES es_ES.UTF-8'
-execute 'dpkg-reconfigure locales'
-
 # Install Kurento Media Server
 package "kurento-media-server#{suffix}" do
 	options "--allow-unauthenticated --force-yes"

@@ -33,6 +33,19 @@ execute "apt-get upgrade --force-yes -y --fix-missing" do
   environment "DEBIAN_FRONTEND" => "noninteractive"
 end
 
+# Disable IPV6
+ruby_block "disable_ipv6" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
+    file.insert_line_if_no_match(/net.ipv6.conf.all.disable_ipv6 = 1/, "net.ipv6.conf.all.disable_ipv6 = 1")
+    file.write_file
+  end
+end
+
+# Fix locales if needed
+execute 'locale-gen es_ES es_ES.UTF-8'
+execute 'dpkg-reconfigure locales'
+
 # Install openssh and create directory /var/run/sshd
 package 'openssh-server'
 directory '/var/run/sshd' do
