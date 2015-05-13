@@ -21,6 +21,7 @@ package 'rabbitmq-server'
 execute 'enable rabbitmq_management' do
 	command 'rabbitmq-plugins enable rabbitmq_management'
 	notifies :restart, "service[rabbitmq-server]", :delayed
+	not_if { ::File.readlines("/etc/rabbitmq/enabled_plugins").grep(/rabbitmq_management/).size > 0 }
 end
 service 'rabbitmq-server' do
 	action [:enable , :start]
