@@ -29,7 +29,9 @@ python_pip 'javasphinx'
 python_pip 'lxml'
 python_pip 'javalang'
 python_pip 'docutils'
-python_pip 'sphinx'
+python_pip 'sphinx' do
+	version "1.2.3"
+end
 
 package 'texlive-full' do
 	timeout 3600
