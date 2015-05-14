@@ -54,19 +54,22 @@ directory '/var/run/sshd' do
 end
 
 # Install git-review
-package "git-review"
+package 'git-review'
 
 # Install postpone
-package "postpone"
+package 'postpone'
+
+# Needed for adm-scripts
+package 'realpath'
 
 # Install xmlstarlet
-package "xmlstarlet"
+package 'xmlstarlet'
 
 # Install jshon
 # Only available since Ubuntu 14.04 Trusty Tahr
 if platform?("ubuntu")
   if node['platform_version'] == "14.04"
-    package "jshon"
+    package 'jshon'
   end
 end
 
@@ -78,7 +81,7 @@ package 'wget'
 
 # Install Java
 # Install JDK without fuse (path for docker containers)
-package "default-jdk" do
+package 'default-jdk' do
   action :install
   options "--no-install-recommends"
 end
