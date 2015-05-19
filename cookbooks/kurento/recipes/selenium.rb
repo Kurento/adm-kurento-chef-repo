@@ -41,7 +41,6 @@ package 'xvfb'
 cookbook_file 'xvfb' do
   path "/etc/init.d/xvfb"
   mode '0755'
-  action :create_if_missing
   notifies :restart, 'service[xvfb]', :immediately
 end
 
