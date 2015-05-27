@@ -96,6 +96,7 @@ package 'zip'
 # Create user & group jenkins
 user node['kurento']['user'] do
   home node['kurento']['home']
+  shell '/bin/bash'
   supports :manage_home => true
 end
 
