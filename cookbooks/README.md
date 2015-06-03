@@ -4,6 +4,7 @@ Knife needs to be configured to know where the cookbooks are located with the `c
 
     cookbook_path ["./cookbooks"]
 
+
 This setting tells knife to look for the cookbooks directory in the present working directory. This means the knife cookbook subcommands need to be run in the `chef-repo` directory itself. To make sure that the cookbooks can be found elsewhere inside the repository, use an absolute path. This is a Ruby file, so something like the following can be used:
 
     current_dir = File.dirname(__FILE__)
