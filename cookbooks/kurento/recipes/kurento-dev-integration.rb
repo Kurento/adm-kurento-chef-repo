@@ -18,7 +18,6 @@
 #
 
 include_recipe 'kurento::jenkins-base'
-include_recipe 'kurento::rabbit'
 include_recipe 'mongodb::default'
 include_recipe 'kurento::ubuntu-ppa'
 include_recipe 'kurento::ubuntu-repo'
