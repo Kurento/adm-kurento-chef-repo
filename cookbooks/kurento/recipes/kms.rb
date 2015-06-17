@@ -18,8 +18,8 @@
 #
 
 version = node['kurento']['kurento-media-server']['package-version']
-if Gem::Version.new(version) >= Gem::Version.new('6.0') 
-  suffix = "-#{version}" 
+if Gem::Version.new(version) >= Gem::Version.new('6.0')
+  suffix = "-#{version}"
 else
   suffix = ""
 end
@@ -29,6 +29,14 @@ execute "kill_kms" do
   command "killall -9 kurento-media-server#{suffix}"
   only_if { File.exists?("/usr/bin/killall") }
   ignore_failure true
+end
+
+# Install kms dependencies first to allow upgrading these
+%w{kms-core km-elements kms-filters}.each do |p|
+  package p do
+    options "--allow-unauthenticated --force-yes"
+    action :upgrade
+  end
 end
 
 # Install Kurento Media Server
