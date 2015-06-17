@@ -28,6 +28,7 @@ package 'ruby1.9.3'
 # Necessary to build native gems
 package 'ruby1.9.1-dev'
 package 'build-essential'
+package 'zlib'
 
 gem_package 'berkshelf' do
 	timeout	3600
