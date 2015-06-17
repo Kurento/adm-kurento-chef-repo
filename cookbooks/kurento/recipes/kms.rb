@@ -32,11 +32,24 @@ execute "kill_kms" do
 end
 
 # Install kms dependencies first to allow upgrading these
-%w{kms-core km-elements kms-filters}.each do |p|
-  package p do
-    options "--allow-unauthenticated --force-yes"
-    action :upgrade
-  end
+package "kms-jsonrpc-1.0" do
+  options "--allow-unauthenticated --force-yes"
+  action :upgrade
+end
+
+package "kms-core-#{suffix}" do
+  options "--allow-unauthenticated --force-yes"
+  action :upgrade
+end
+
+package "kms-elements-#{suffix}" do
+  options "--allow-unauthenticated --force-yes"
+  action :upgrade
+end
+
+package "kms-filters-#{suffix}" do
+  options "--allow-unauthenticated --force-yes"
+  action :upgrade
 end
 
 # Install Kurento Media Server
