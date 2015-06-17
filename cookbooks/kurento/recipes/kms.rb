@@ -37,17 +37,17 @@ package "kms-jsonrpc-1.0" do
   action :upgrade
 end
 
-package "kms-core-#{suffix}" do
+package "kms-core#{suffix}" do
   options "--allow-unauthenticated --force-yes"
   action :upgrade
 end
 
-package "kms-elements-#{suffix}" do
+package "kms-elements#{suffix}" do
   options "--allow-unauthenticated --force-yes"
   action :upgrade
 end
 
-package "kms-filters-#{suffix}" do
+package "kms-filters#{suffix}" do
   options "--allow-unauthenticated --force-yes"
   action :upgrade
 end
