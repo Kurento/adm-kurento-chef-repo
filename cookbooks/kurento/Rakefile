@@ -12,7 +12,7 @@ end
 
 desc "Runs chefspec on all the cookbooks."
 task :chefspec do
-  sh "rspec . --format RspecJunitFormatter --out test-results.xml"
+  sh "rspec . --pattern spec/**/*_spec.rb --format RspecJunitFormatter --out test-results.xml"
 end
 
 task :default => ['foodcritic', 'chefspec']

@@ -21,7 +21,7 @@ suites:
     run_list:
       - recipe[kurento::docker]
   - name: kurento-demo
-    excludes: 
+    excludes:
       - ubuntu-14.04-i386
     run_list:
       - recipe[kurento::kurento-demo]
@@ -31,7 +31,7 @@ suites:
           packages: []
 
   - name: kurento-demo-6
-    excludes: 
+    excludes:
       - ubuntu-14.04-i386
     run_list:
       - recipe[kurento::kurento-demo]
@@ -52,6 +52,7 @@ suites:
         memory: 2048
     run_list:
       - recipe[kurento::chef]
+
   - name: selenium
     excludes:
       - ubuntu-14.04-i386

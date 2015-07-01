@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: ubuntu-ppa
+# Recipe:: ubuntu-repo
 #
 # Copyright 2014, Kurento
 #
@@ -20,13 +20,9 @@
 include_recipe 'apt'
 
 # Kurento Media Server
-apt_repository 'kurento' do
-uri          'http://ppa.launchpad.net/kurento/kurento/ubuntu/'
-distribution node['lsb']['codename']
-components   ['main']
-keyserver    'keyserver.ubuntu.com'
-key          '6B5278DE'
+apt_repository 'kurento-dev' do
+	uri          'http://ubuntu.kurento.org'
+	distribution "#{node['lsb']['codename']}-dev"
+	components   [ node['kurento']['kurento-media-server']['component'] ]
+	key          'http://ubuntu.kurento.org/kurento.gpg.key '
 end
-
-execute 'apt-key update'
-execute 'apt-get update'

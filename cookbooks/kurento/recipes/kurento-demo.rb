@@ -24,8 +24,8 @@ package 'default-jre-headless' do
   action :install
 end
 
-include_recipe 'kurento::ubuntu-ppa'
-include_recipe 'kurento::ubuntu-repo'
+include_recipe 'kurento::ubuntu-releases'
+include_recipe 'kurento::ubuntu-dev'
 include_recipe 'kurento::kms'
 include_recipe 'kurento::kms-modules'
 include_recipe 'kurento::tutorial-java'

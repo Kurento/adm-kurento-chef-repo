@@ -19,8 +19,8 @@
 
 include_recipe 'kurento::jenkins-base'
 include_recipe 'mongodb::default'
-include_recipe 'kurento::ubuntu-ppa'
-include_recipe 'kurento::ubuntu-repo'
+include_recipe 'kurento::ubuntu-releases'
+include_recipe 'kurento::ubuntu-dev'
 include_recipe 'kurento::kms'
 include_recipe 'kurento::kms-modules'
 include_recipe 'kurento::kcs'

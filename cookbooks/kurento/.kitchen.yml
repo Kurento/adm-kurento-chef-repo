@@ -3,7 +3,7 @@ driver:
   name: docker
 driver_config:
   use_sudo: false
-  provision_command: 
+  provision_command:
     - curl -L https://www.getchef.com/chef/install.sh | bash
     - locale-gen en_US.UTF-8
     - echo 'export LANG="en_US.UTF-8"' >> /etc/profile
@@ -26,27 +26,28 @@ suites:
 
   - name: kurento-media-server-dev
     run_list:
-      - recipe[kurento::ubuntu-ppa]
-      - recipe[kurento::ubuntu-repo]
+      - recipe[kurento::ubuntu-releases]
+      - recipe[kurento::ubuntu-dev]
       - recipe[kurento::kms]
       - recipe[kurento::kurento-module-creator]
     attributes:
       kurento:
         kurento-media-server:
           package-version: '6.0'
+          component: 'kms6'
         kurento-module-creator:
           package-version: '4.0'
 
   - name: kurento-media-server-release
     run_list:
-      - recipe[kurento::ubuntu-ppa]
-      - recipe[kurento::ubuntu-repo]
+      - recipe[kurento::ubuntu-releases]
       - recipe[kurento::kms]
       - recipe[kurento::kurento-module-creator]
     attributes:
       kurento:
         kurento-media-server:
           package-version: '5.0'
+          component: 'main'
         kurento-module-creator:
           package-version: '3.0'
 
@@ -55,7 +56,7 @@ suites:
     run_list:
       - recipe[kurento::jenkins-base]
       - recipe[kurento::npm]
-    attributes: 
+    attributes:
       kurento:
         email: "jenkins@kurento.org"
         master-host: "ci.kurento.org"
@@ -68,7 +69,7 @@ suites:
     data_bags_path: "test/integration/data_bags"
     run_list:
       - recipe[kurento::jenkins-base]
-    attributes: 
+    attributes:
       kurento:
         email: "jenkins@kurento.org"
         master-host: "ci.kurento.org"
@@ -84,7 +85,7 @@ suites:
       - recipe[kurento::ubuntu-repo]
       - recipe[kurento::jenkins-base]
       - recipe[kurento::integration]
-    attributes: 
+    attributes:
       kurento:
         email: "jenkins@kurento.org"
         master-host: "ci.kurento.org"
@@ -104,7 +105,7 @@ suites:
     data_bags_path: "test/integration/data_bags"
     run_list:
       - recipe[kurento::kurento-dev-docker]
-    attributes: 
+    attributes:
       kurento:
         email: "jenkins@kurento.org"
         master-host: "ci.kurento.org"
@@ -119,7 +120,7 @@ suites:
     data_bags_path: "test/integration/data_bags"
     run_list:
       - recipe[kurento::kurento-dev-docker]
-    attributes: 
+    attributes:
       kurento:
         email: "jenkins@kurento.org"
         master-host: "ci.kurento.org"
