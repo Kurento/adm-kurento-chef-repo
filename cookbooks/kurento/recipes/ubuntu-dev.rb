@@ -23,6 +23,6 @@ include_recipe 'apt'
 apt_repository 'kurento-dev' do
 	uri          'http://ubuntu.kurento.org'
 	distribution "#{node['lsb']['codename']}-dev"
-	components   [ node['kurento']['kurento-media-server']['component'] ]
+	components   [ 'main', node['kurento']['kurento-media-server']['component'] ]
 	key          'http://ubuntu.kurento.org/kurento.gpg.key '
 end
