@@ -20,7 +20,7 @@
 version = node['kurento']['kurento-media-server']['package-version']
 if Gem::Version.new(version) >= Gem::Version.new('6.0')
   suffix = "-#{version}"
-  jsonrpc_suffix = "-#{version}"
+  jsonrpc_suffix = "-1.0"
 else
   suffix = ""
   jsonrpc_suffix = ""
