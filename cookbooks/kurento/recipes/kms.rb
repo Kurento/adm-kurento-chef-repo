@@ -20,8 +20,10 @@
 version = node['kurento']['kurento-media-server']['package-version']
 if Gem::Version.new(version) >= Gem::Version.new('6.0')
   suffix = "-#{version}"
+  jsonrpc_suffix = "-#{version}"
 else
   suffix = ""
+  jsonrpc_suffix = ""
 end
 
 # Kill all media server instances
@@ -32,7 +34,7 @@ execute "kill_kms" do
 end
 
 # Install kms dependencies first to allow upgrading these
-package "kms-jsonrpc-1.0" do
+package "kms-jsonrpc#{jsonrpc_suffix}" do
   options "--allow-unauthenticated --force-yes"
   action :upgrade
 end
