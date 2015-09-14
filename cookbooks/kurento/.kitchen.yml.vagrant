@@ -18,8 +18,18 @@ platforms:
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 suites:
   - name: docker
+    excludes:
+      - ubuntu-14.04-i386
+    driver:
+      customize:
+        memory: 1024
     run_list:
+      - recipe[apt]
       - recipe[kurento::docker]
+    attributes:
+      kurento:
+        user: 'vagrant'
+
   - name: kurento-demo
     excludes:
       - ubuntu-14.04-i386
