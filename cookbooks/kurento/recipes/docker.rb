@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+# See https://github.com/docker/docker/issues/9592
+execute "echo \"Acquire::HTTP::Proxy::apt.dockerproject.org \\\"DIRECT\\\";\" >> /etc/apt/apt.conf.d/01proxy"
+
 group 'docker' do
 	members node['kurento']['user']
 end
