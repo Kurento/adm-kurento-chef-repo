@@ -2,5 +2,5 @@
 host=code.kurento.org
 port=12345
 project=adm-kurento-chef-repo
-defaultbranch=develop
+defaultbranch=master
 
