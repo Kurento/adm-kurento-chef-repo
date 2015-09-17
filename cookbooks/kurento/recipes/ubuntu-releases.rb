@@ -24,7 +24,8 @@ apt_repository 'kurento' do
 	uri          'http://ubuntu.kurento.org'
 	distribution node['lsb']['codename']
 	components   [ 'main', node['kurento']['kurento-media-server']['component'] ]
-	key          'http://ubuntu.kurento.org/kurento.gpg.key '
+	keyserver    'keyserver.ubuntu.com'
+  key          '2F819BC0'
 end
 
 execute 'apt-key update'
