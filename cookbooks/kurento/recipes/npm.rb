@@ -27,6 +27,7 @@ package 'npm' do
 end
 
 package 'curl'
+execute "echo \"Acquire::HTTP::Proxy::deb.nodesource.com \\\"DIRECT\\\";\" >> /etc/apt/apt.conf.d/01proxy"
 execute "curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -"
 
 # Install nodejs
