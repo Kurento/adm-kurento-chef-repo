@@ -27,7 +27,13 @@ package 'npm' do
 end
 
 package 'curl'
-execute "echo \"Acquire::HTTP::Proxy::deb.nodesource.com \\\"DIRECT\\\";\" >> /etc/apt/apt.conf.d/01proxy"
+ruby_block "bypass_proxy_nodesource" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/deb.nodesource.com/, "Acquire::HTTP::Proxy::deb.nodesource.com \\\"DIRECT\\\";")
+    file.write_file
+  end
+end
 execute "curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -"
 
 # Install nodejs
