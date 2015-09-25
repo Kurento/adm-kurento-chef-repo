@@ -3,23 +3,17 @@ driver:
   name: vagrant
 driver_config:
   use_sudo: false
-  provision_command: curl -L https://www.getchef.com/chef/install.sh | bash
+  provision_command: curl -L https://www.chef.io/chef/install.sh | bash -s -- -v 12.0.3
 
 provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-14.04-i386
-    driver:
-      box: opscode-ubuntu-14.04-i386
-      box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04-i386_chef-provisionerless.box
   - name: ubuntu-14.04
     driver:
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 suites:
   - name: docker
-    excludes:
-      - ubuntu-14.04-i386
     driver:
       customize:
         memory: 1024
@@ -31,8 +25,6 @@ suites:
         user: 'vagrant'
 
   - name: kurento-demo
-    excludes:
-      - ubuntu-14.04-i386
     run_list:
       - recipe[kurento::kurento-demo]
     attributes:
@@ -41,8 +33,6 @@ suites:
           packages: []
 
   - name: kurento-demo-6
-    excludes:
-      - ubuntu-14.04-i386
     run_list:
       - recipe[kurento::kurento-demo]
     attributes:
@@ -55,8 +45,6 @@ suites:
           package-version: '4.0'
 
   - name: chef
-    excludes:
-      - ubuntu-14.04-i386
     driver:
       customize:
         memory: 2048
@@ -64,11 +52,26 @@ suites:
       - recipe[kurento::chef]
 
   - name: selenium
-    excludes:
-      - ubuntu-14.04-i386
     driver:
       customize:
         memory: 2048
     run_list:
       - recipe[apt]
       - recipe[kurento::selenium]
+
+  - name: node
+    driver:
+      customize:
+        memory: 1024
+    run_list:
+      - recipe[apt]
+      - recipe[kurento::npm]
+    attributes:
+      kurento:
+        home: '/home/vagrant'
+        user: 'vagrant'
+        group: 'vagrant'
+        npm:
+          username: 'vagrantnpmtest'
+          password: 'vagrantnpmtest'
+          email: 'test@acme.org'

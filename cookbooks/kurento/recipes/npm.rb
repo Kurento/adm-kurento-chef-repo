@@ -18,13 +18,12 @@
 #
 
 # Add nodejs repository
-apt_repository 'nodejs' do
-  uri          'http://ppa.launchpad.net/chris-lea/node.js/ubuntu'
-  distribution node['lsb']['codename']
-  components   ['main']
-  keyserver    'keyserver.ubuntu.com'
-  key          'C7917B12'
+package ['nodejs', 'npm'] do
+  action :remove
 end
+
+package 'curl'
+execute "curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -"
 
 # Install nodejs
 package 'nodejs'
@@ -36,7 +35,7 @@ cookbook_file "#{node['kurento']['home']}/.npmrc" do
   mode    0660
 end
 
-# Enable node to register npm releases 
+# Enable node to register npm releases
 bash "npm adduser" do
   code <<-EOF
     /usr/bin/expect -c 'spawn npm adduser
