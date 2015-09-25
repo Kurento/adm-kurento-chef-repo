@@ -65,9 +65,6 @@ bash "npm adduser" do
   environment ({'HOME' => node['kurento']['home']})
 end
 
-execute 'npm install -g bower'
-execute 'npm install -g npm'
-
 # Configure kurento's private bower registry
 cookbook_file 'bowerrc' do
   owner node['kurento']['user']
