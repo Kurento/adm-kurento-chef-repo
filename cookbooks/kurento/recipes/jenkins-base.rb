@@ -26,8 +26,29 @@ ruby_block "update_hosts" do
   end
 end
 
-# Configure Kurento's apt proxy
-execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy"
+# Configure Kurento's apt proxy if necessary
+ruby_block "add_proxy_if_necessary" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/ubuntu.kurento.org:3142/, "Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";")
+    file.write_file
+  end
+end
+ruby_block "bypass_proxy_nodesource" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/deb.nodesource.com/, "Acquire::HTTP::Proxy::deb.nodesource.com \\\"DIRECT\\\";")
+    file.write_file
+  end
+end
+ruby_block "bypass_proxy_dockerproject" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/apt.dockerproject.org/, "Acquire::HTTP::Proxy::apt.dockerproject.org \\\"DIRECT\\\";")
+    file.write_file
+  end
+end
+
 execute "apt-get update"
 execute "apt-get upgrade --force-yes -y --fix-missing" do
   environment "DEBIAN_FRONTEND" => "noninteractive"
@@ -128,7 +149,7 @@ ruby_block "add_jenkins_user_to_sudoers" do
       end
     end
     file = Chef::Util::FileEdit.new("/etc/sudoers")
-    if found 
+    if found
       file.search_file_replace_line(/jenkins/, "jenkins    ALL=(ALL) NOPASSWD: ALL")
     else
       file.insert_line_if_no_match(/jenkins/, "jenkins    ALL=(ALL) NOPASSWD: ALL")

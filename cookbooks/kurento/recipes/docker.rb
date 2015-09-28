@@ -18,7 +18,13 @@
 #
 
 # See https://github.com/docker/docker/issues/9592
-execute "echo \"Acquire::HTTP::Proxy::apt.dockerproject.org \\\"DIRECT\\\";\" >> /etc/apt/apt.conf.d/01proxy"
+ruby_block "bypass_proxy_dockerproject" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/apt.dockerproject.org/, "Acquire::HTTP::Proxy::apt.dockerproject.org \\\"DIRECT\\\";")
+    file.write_file
+  end
+end
 
 group 'docker' do
 	members node['kurento']['user']
