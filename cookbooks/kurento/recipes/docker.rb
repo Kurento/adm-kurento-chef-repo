@@ -39,3 +39,15 @@ execute 'curl -L https://github.com/docker/compose/releases/download/1.4.0/docke
 chmod +x /usr/local/bin/docker-compose'
 execute 'chmod +x /usr/local/bin/docker-compose'
 execute "curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose --version | awk 'NR==1{print $NF}')/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+
+# Install dogestry to have an S3 backed docker repository
+remote_file '/usr/bin/dogestry-linux-2.0.2' do
+	source 'https://github.com/dogestry/dogestry/releases/download/v2.0.2/dogestry-linux-2.0.2'
+	owner 'root'
+	group 'root'
+	mode '0755'
+	action :create
+end
+link '/usr/bin/dogestry' do
+  to '/usr/bin/dogestry-linux-2.0.2'
+end
