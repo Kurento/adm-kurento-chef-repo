@@ -27,6 +27,9 @@ ruby_block "update_hosts" do
 end
 
 # Configure Kurento's apt proxy if necessary
+execute "echo \"Acquire::http::Proxy \\\"http://ubuntu.kurento.org:3142\\\";\" > /etc/apt/apt.conf.d/01proxy" do
+  not_if { ::File.exists('/etc/apt/apt.conf.d/01proxy') }
+end
 ruby_block "add_proxy_if_necessary" do
   block do
     file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
