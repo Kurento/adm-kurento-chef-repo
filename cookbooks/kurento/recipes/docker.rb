@@ -33,7 +33,7 @@ end
 # Install docker-engine
 package 'curl'
 execute 'curl -sSL https://get.docker.com/ | sh' do
-  not_if { File.exists('/usr/bin/docker') }
+  not_if { ::File.exists?('/usr/bin/docker') }
 end
 
 service "docker" do
