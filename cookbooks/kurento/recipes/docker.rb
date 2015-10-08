@@ -34,6 +34,10 @@ end
 package 'curl'
 execute 'curl -sSL https://get.docker.com/ | sh'
 
+service "docker" do
+  action :start
+end
+
 # Install docker-compose
 execute 'curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose'
@@ -50,4 +54,14 @@ remote_file '/usr/bin/dogestry-linux-2.0.2' do
 end
 link '/usr/bin/dogestry' do
   to '/usr/bin/dogestry-linux-2.0.2'
+end
+
+# Make docker listen on all ips
+ruby_block "bypass_proxy_dockerproject" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/default/docker")
+    file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\"")
+    file.write_file
+  end
+  notifies :restart, 'service[docker]', :immediately
 end
