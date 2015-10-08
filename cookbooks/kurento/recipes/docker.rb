@@ -32,7 +32,9 @@ end
 
 # Install docker-engine
 package 'curl'
-execute 'curl -sSL https://get.docker.com/ | sh'
+execute 'curl -sSL https://get.docker.com/ | sh' do
+  not_if { File.exists('/usr/bin/docker') }
+end
 
 service "docker" do
   action :start
@@ -57,7 +59,7 @@ link '/usr/bin/dogestry' do
 end
 
 # Make docker listen on all ips
-ruby_block "bypass_proxy_dockerproject" do
+ruby_block "attach_docker_all_interfaces" do
   block do
     file = Chef::Util::FileEdit.new("/etc/default/docker")
     file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\"")
