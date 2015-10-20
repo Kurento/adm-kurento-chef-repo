@@ -38,6 +38,7 @@ end
 
 service "docker" do
   action :start
+  supports :status => true, :start => true, :stop => true, :restart => true
 end
 
 # Install docker-compose
