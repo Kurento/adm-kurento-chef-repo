@@ -37,7 +37,6 @@ execute 'curl -sSL https://get.docker.com/ | sh' do
 end
 
 service "docker" do
-  provider Chef::Provider::Service::Upstart
   action :start
   supports :status => true, :start => true, :stop => true, :restart => true
 end

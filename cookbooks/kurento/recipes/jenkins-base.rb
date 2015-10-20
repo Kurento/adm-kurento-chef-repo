@@ -51,8 +51,18 @@ ruby_block "bypass_proxy_dockerproject" do
     file.write_file
   end
 end
+ruby_block "bypass_proxy_nova" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/apt/apt.conf.d/01proxy")
+    file.insert_line_if_no_match(/nova.clouds.archive.ubuntu.com/, "Acquire::HTTP::Proxy::nova.clouds.archive.ubuntu.com \\\"DIRECT\\\";")
+    file.write_file
+  end
+end
 
-execute "apt-get update"
+execute "apt-get update" do
+  ignore_failure true
+end
+
 execute "apt-get upgrade --force-yes -y --fix-missing" do
   environment "DEBIAN_FRONTEND" => "noninteractive"
 end
