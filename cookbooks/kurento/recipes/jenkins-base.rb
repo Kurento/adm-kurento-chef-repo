@@ -200,6 +200,16 @@ end
 ssh_known_hosts_entry node['kurento']['master-host']
 include_recipe 'ssh-keys'
 
+# Add private key from master
+user = data_bag_item('users', 'jenkins')
+file "#{node['kurento']['home']}/.ssh/id_rsa" do
+  content "#{user['ssh_private_key']}"
+  mode 0600
+  owner node['kurento']['user']
+  group node['kurento']['group']
+  action :create
+end
+
 # Add Kurento's gnupg keys
 remote_directory "#{node['kurento']['home']}/.gnupg" do
   mode        0700
