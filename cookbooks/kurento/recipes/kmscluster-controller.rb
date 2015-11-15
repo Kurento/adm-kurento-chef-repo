@@ -116,4 +116,22 @@ bash 'install_aws_cnf' do
   EOH
 end
 
-# Install AWS CloudWatch Log agent
+# Install FluentD
+bash 'limits' do
+  user 'root'
+  flags '-x'
+  cwd '/tmp'
+  code <<-EOH
+    # Set limits
+    sed -i 's/^.*soft nofile.*$//g' /etc/security/limits.conf
+    sed -i 's/^.*hard nofile.*$//g' /etc/security/limits.conf
+    echo "root soft nofile 500000" >> /etc/security/limits.conf
+    echo "root hard nofile 500000" >> /etc/security/limits.conf
+    echo "* soft nofile 500000" >> /etc/security/limits.conf
+    echo "* hard nofile 500000" >> /etc/security/limits.conf
+    # Install agent
+    curl -L https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh
+    # Install cloudwatch logs agent
+    td-agent-gem install fluent-plugin-cloudwatch-logs
+  EOH
+end
