@@ -34,6 +34,7 @@ end
 
 package 'unzip'
 package 'nginx'
+package 'jshon'
 
 # Install Kurento Media Server
 package 'kurento-media-server-6.0' do
