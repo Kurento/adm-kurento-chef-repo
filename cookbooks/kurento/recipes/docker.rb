@@ -60,10 +60,20 @@ link '/usr/bin/dogestry' do
 end
 
 # Make docker listen on all ips
-ruby_block "attach_docker_all_interfaces" do
+ruby_block "attach_docker_all_interfaces_and_enable_ipv6" do
   block do
     file = Chef::Util::FileEdit.new("/etc/default/docker")
-    file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\"")
+    file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock\" --ipv6 --fixed-cidr-v6=\"2001:db8:1::/64\"")
+    file.write_file
+  end
+  notifies :restart, 'service[docker]', :immediately
+end
+
+# Change core pattern to core
+ruby_block "set_core_pattern" do
+  block do
+    file = Chef::Util::FileEdit.new("/etc/sysctl.conf")
+    file.insert_line_if_no_match(/^kernel.core_pattern/, "kernel.core_pattern=core")
     file.write_file
   end
   notifies :restart, 'service[docker]', :immediately
