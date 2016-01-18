@@ -72,7 +72,7 @@ ruby_block "attach_docker_all_interfaces_and_enable_ipv6" do
       file.write_file
     end
   end
-  notifies :restart, 'service[docker]', :immediately
+  notifies :restart, 'service[docker]', :delayed
 end
 
 # Change core pattern to core
@@ -82,5 +82,5 @@ ruby_block "set_core_pattern" do
     file.insert_line_if_no_match(/^kernel.core_pattern/, "kernel.core_pattern=core")
     file.write_file
   end
-  notifies :restart, 'service[docker]', :immediately
+  notifies :restart, 'service[docker]', :delayed
 end
