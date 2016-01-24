@@ -138,3 +138,15 @@ bash 'limits' do
     td-agent-gem install fluent-plugin-cloudwatch-logs
   EOH
 end
+
+# Install Logstash
+bash 'logstash' do
+  user 'root'
+  flags '-x'
+  code <<-EOH
+    wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+    echo "deb http://packages.elastic.co/logstash/2.1/debian stable main" | sudo tee -a /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get install logstash
+  EOH
+end
