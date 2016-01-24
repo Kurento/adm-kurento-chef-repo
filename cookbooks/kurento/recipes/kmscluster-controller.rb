@@ -47,6 +47,8 @@ service 'kurento-media-server-6.0' do
   action :disable
 end
 
+# install Kurento modules
+package 'kms-s3'
 
 # Install Kurento KMS controller
 execute "unzip_controller" do
