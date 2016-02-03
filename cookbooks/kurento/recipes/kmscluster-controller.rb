@@ -17,20 +17,42 @@
 # limitations under the License.
 #
 
-# Configure network
-bash 'sysctl' do
-  user 'root'
-  flags '-x'
-  code <<-EOH
-    echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
-    echo "net.core.rmem_max = 33554432" >> /etc/sysctl.conf
-    echo "net.core.wmem_max = 33554432" >> /etc/sysctl.conf
-    echo "net.core.rmem_default = 1048576" >> /etc/sysctl.conf
-    echo "net.core.wmem_default = 1048576" >> /etc/sysctl.conf
-    echo "net.ipv4.udp_wmem_min = 1048576" >> /etc/sysctl.conf
-    echo "net.ipv4.udp_rmem_min = 1048576" >> /etc/sysctl.conf
-  EOH
+# Provide access to private repository
+bash 'apt-transport-s3' do
+	user 'root'
+	flags '-x'
+	code <<-EOH
+		wget http://ftp.de.debian.org/debian/pool/main/a/apt-transport-s3/apt-transport-s3_1.2.1-1_all.deb
+		dpkg -i apt-transport-s3_1.2.1-1_all.deb
+	EOH
 end
+
+cookbook_file 's3auth.conf' do
+  owner 'root'
+  group 'root'
+  path '/etc/apt/s3auth.conf'
+  mode 0600
+  action :create_if_missing
+end
+
+apt_repository 'kurento-priv' do
+	uri          's3://ubuntu-priv.kurento.org.s3.amazonaws.com'
+	distribution node['kurento']['kurento-media-server']['distribution']
+	components   [ node['kurento']['kurento-media-server']['component'] ]
+	keyserver    'keyserver.ubuntu.com'
+  key          '2F819BC0'
+end
+
+apt_repository 'kurento' do
+	uri          'http://ubuntuci.kurento.org'
+  distribution node['kurento']['kurento-media-server']['distribution']
+	components   [ node['kurento']['kurento-media-server']['component'] ]
+	keyserver    'keyserver.ubuntu.com'
+  key          '2F819BC0'
+end
+
+execute 'apt-key update'
+execute 'apt-get update'
 
 package 'unzip'
 package 'nginx'
@@ -49,6 +71,13 @@ end
 
 # install Kurento modules
 package 'kms-s3'
+
+# Remove access to private repository
+apt_repository 'kurento-priv' do
+	uri          's3://ubuntu-priv.kurento.org.s3.amazonaws.com'
+  action       :remove
+end
+execute 'apt-get update'
 
 # Install Kurento KMS controller
 execute "unzip_controller" do
@@ -148,5 +177,20 @@ bash 'logstash' do
     echo "deb http://packages.elastic.co/logstash/2.1/debian stable main" | sudo tee -a /etc/apt/sources.list
     sudo apt-get update
     sudo apt-get install logstash
+  EOH
+end
+
+# Configure network
+bash 'sysctl' do
+  user 'root'
+  flags '-x'
+  code <<-EOH
+    echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+    echo "net.core.rmem_max = 33554432" >> /etc/sysctl.conf
+    echo "net.core.wmem_max = 33554432" >> /etc/sysctl.conf
+    echo "net.core.rmem_default = 1048576" >> /etc/sysctl.conf
+    echo "net.core.wmem_default = 1048576" >> /etc/sysctl.conf
+    echo "net.ipv4.udp_wmem_min = 1048576" >> /etc/sysctl.conf
+    echo "net.ipv4.udp_rmem_min = 1048576" >> /etc/sysctl.conf
   EOH
 end
