@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kurento
-# Recipe:: kmscluster-controller
+# Recipe:: kurento-sfu-room-demo
 #
 # Copyright 2015, Kurento
 #
@@ -17,108 +17,21 @@
 # limitations under the License.
 #
 
-# Provide access to private repository
-bash 'apt-transport-s3' do
-	user 'root'
-	flags '-x'
-	code <<-EOH
-		wget http://ftp.de.debian.org/debian/pool/main/a/apt-transport-s3/apt-transport-s3_1.2.1-1_all.deb
-		dpkg -i apt-transport-s3_1.2.1-1_all.deb
-	EOH
-end
-
-cookbook_file 's3auth.conf' do
-  owner 'root'
-  group 'root'
-  path '/etc/apt/s3auth.conf'
-  mode 0600
-  action :create_if_missing
-end
-
-apt_repository 'kurento-priv' do
-	uri          's3://ubuntu-priv.kurento.org.s3.amazonaws.com'
-	distribution node['kurento']['kurento-media-server']['distribution']
-	components   [ node['kurento']['kurento-media-server']['component'] ]
-	keyserver    'keyserver.ubuntu.com'
-  key          '2F819BC0'
-end
-
-apt_repository 'kurento' do
-	uri          'http://ubuntuci.kurento.org'
-  distribution node['kurento']['kurento-media-server']['distribution']
-	components   [ node['kurento']['kurento-media-server']['component'] ]
-	keyserver    'keyserver.ubuntu.com'
-  key          '2F819BC0'
-end
-
-execute 'apt-key update'
 execute 'apt-get update'
 
 package 'unzip'
-package 'nginx'
 package 'jshon'
 
-# Install Kurento Media Server
-package 'kurento-media-server-6.0' do
-  options "-y --allow-unauthenticated --force-yes"
-  action :upgrade
-end
-
-# Disable automatic media server startup
-service 'kurento-media-server-6.0' do
-  action :disable
-end
-
-# install Kurento modules
-package 'kms-s3'
-
-# Remove access to private repository
-apt_repository 'kurento-priv' do
-	uri          's3://ubuntu-priv.kurento.org.s3.amazonaws.com'
-  action       :remove
-end
-execute 'apt-get update'
-
-# Install Kurento KMS controller
-execute "unzip_controller" do
+# Unzip Kurento App
+execute "unzip_kurento_app" do
   cwd "/tmp"
-  command "unzip -o /tmp/kurento-kmscluster-controller.zip"
+  command "unzip -o /tmp/kurento-app.zip"
 end
 
-execute "install_controller" do
-  cwd "/tmp/kurento-kmscluster-controller"
+# Install Kurento App
+execute "install_kurento_app" do
+  cwd "/tmp"
   command "./bin/install.sh"
-end
-
-# Install TURN server
-remote_file "/tmp/turnserver-4.4.2.2-debian-wheezy-ubuntu-mint-x86-64bits.tar.gz" do
-  source "http://turnserver.open-sys.org/downloads/v4.4.2.2/turnserver-4.4.2.2-debian-wheezy-ubuntu-mint-x86-64bits.tar.gz"
-  mode "0755"
-end
-
-execute "untar_turn" do
-  cwd "/tmp"
-  command "tar xzf turnserver-4.4.2.2-debian-wheezy-ubuntu-mint-x86-64bits.tar.gz"
-end
-
-package 'libevent-core-2.0-5'
-package 'libevent-extra-2.0-5'
-package 'libevent-openssl-2.0-5'
-package 'libevent-pthreads-2.0-5'
-package 'libhiredis0.10'
-package 'libmysqlclient18'
-package 'libpq5'
-execute "install_turn" do
-  cwd "/tmp"
-  command "dpkg -i coturn_4.4.2.2-1_amd64.deb"
-end
-
-ruby_block "enable_turnserver" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/default/coturn")
-    file.search_file_replace_line(/^.*TURNSERVER_ENABLED.*$/, "TURNSERVER_ENABLED=1")
-    file.write_file
-  end
 end
 
 # Install AWS CLI
