@@ -28,10 +28,10 @@ execute "unzip_kurento_app" do
   command "unzip -o /tmp/kurento-app.zip"
 end
 
-# Install Kurento App
+# Install Kurento App with no automatic enable and start
 execute "install_kurento_app" do
   cwd "/tmp"
-  command "./bin/install.sh"
+  command "NOSTART=true NOENABLE=true ./bin/install.sh"
 end
 
 # Install AWS CLI
@@ -106,4 +106,12 @@ bash 'sysctl' do
     echo "net.ipv4.udp_wmem_min = 1048576" >> /etc/sysctl.conf
     echo "net.ipv4.udp_rmem_min = 1048576" >> /etc/sysctl.conf
   EOH
+end
+
+# Disable all services
+service 'logstash' do
+  action :disable
+end
+service 'td-agent' do
+	action :disable
 end

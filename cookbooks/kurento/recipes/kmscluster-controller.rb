@@ -64,11 +64,6 @@ package 'kurento-media-server-6.0' do
   action :upgrade
 end
 
-# Disable automatic media server startup
-service 'kurento-media-server-6.0' do
-  action :disable
-end
-
 # install Kurento modules
 package 'kms-s3'
 
@@ -193,4 +188,24 @@ bash 'sysctl' do
     echo "net.ipv4.udp_wmem_min = 1048576" >> /etc/sysctl.conf
     echo "net.ipv4.udp_rmem_min = 1048576" >> /etc/sysctl.conf
   EOH
+end
+
+# Disable all services. Let cloud-init to start as required
+service 'kurento-media-server-6.0' do
+  action :disable
+end
+service 'kurento-kmscluster-controller' do
+  action :disable
+end
+service 'nginx' do
+  action :disable
+end
+service 'logstash' do
+  action :disable
+end
+service 'td-agent' do
+	action :disable
+end
+service 'coturn' do
+	action :disable
 end
