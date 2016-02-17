@@ -57,6 +57,8 @@ execute 'apt-get update'
 package 'unzip'
 package 'nginx'
 package 'jshon'
+package 'dkms'
+package 'build-essential'
 
 # Install Kurento Media Server
 package 'kurento-media-server-6.0' do
@@ -66,8 +68,9 @@ end
 
 # install Kurento modules
 package 'kms-s3'
+package 'kms-sfu'
 
-# Remove access to private repository
+# Remove access to private repository to avoid access during runtime
 apt_repository 'kurento-priv' do
 	uri          's3://ubuntu-priv.kurento.org.s3.amazonaws.com'
   action       :remove
@@ -188,6 +191,28 @@ bash 'sysctl' do
     echo "net.ipv4.udp_wmem_min = 1048576" >> /etc/sysctl.conf
     echo "net.ipv4.udp_rmem_min = 1048576" >> /etc/sysctl.conf
   EOH
+end
+
+# Install driver for enhanced networking in AWS
+bash 'ixgbevf' do
+  user 'root'
+	cwd '/tmp'
+  flags '-x'
+  code <<-EOH
+		mkdir work
+		cd work
+		wget http://sourceforge.net/projects/e1000/files/ixgbevf%20stable/2.16.1/ixgbevf-2.16.1.tar.gz
+		tar zxf ixgbevf-2.16.1.tar.gz
+		# https://gist.github.com/defila-aws/44946d3a3c0874fe3d17
+		curl -L -O https://gist.github.com/defila-aws/44946d3a3c0874fe3d17/raw/af64c3c589811a0d214059d1e4fd220a96eaebb3/patch-ubuntu_14.04.1-ixgbevf-2.16.1-kcompat.h.patch
+		cd ixgbevf-2.16.1/src
+		patch -p5 <../../patch-ubuntu_14.04.1-ixgbevf-2.16.1-kcompat.h.patch
+		dkms add -m ixgbevf -v 2.16.1
+		dkms build -m ixgbevf -v 2.16.1
+		dkms install -m ixgbevf -v 2.16.1
+		update-initramfs -c -k all
+		echo "options ixgbevf InterruptThrottleRate=1,1,1,1,1,1,1,1" > /etc/modprobe.d/ixgbevf.conf
+	EOH
 end
 
 # Disable all services. Let cloud-init to start as required
