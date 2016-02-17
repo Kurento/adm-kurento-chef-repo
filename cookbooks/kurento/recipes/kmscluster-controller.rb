@@ -199,18 +199,29 @@ bash 'ixgbevf' do
 	cwd '/tmp'
   flags '-x'
   code <<-EOH
-		mkdir work
-		cd work
 		wget http://sourceforge.net/projects/e1000/files/ixgbevf%20stable/2.16.1/ixgbevf-2.16.1.tar.gz
 		tar zxf ixgbevf-2.16.1.tar.gz
+		mv ixgbevf-2.16.1 /usr/src/
+		cd /usr/src/ixgbevf-2.16.1
+		cat > /usr/src/ixgbevf-2.16.1/dkms.conf <<-EOCONFIG
+			PACKAGE_NAME="ixgbevf"
+			PACKAGE_VERSION="2.16.1"
+			CLEAN="cd src/; make clean"
+			MAKE="cd src/; make BUILD_KERNEL=\\\${kernelver}"
+			BUILT_MODULE_LOCATION[0]="src/"
+			BUILT_MODULE_NAME[0]="ixgbevf"
+			DEST_MODULE_LOCATION[0]="/updates"
+			DEST_MODULE_NAME[0]="ixgbevf"
+			AUTOINSTALL="yes"
+		EOCONFIG
 		# https://gist.github.com/defila-aws/44946d3a3c0874fe3d17
 		curl -L -O https://gist.github.com/defila-aws/44946d3a3c0874fe3d17/raw/af64c3c589811a0d214059d1e4fd220a96eaebb3/patch-ubuntu_14.04.1-ixgbevf-2.16.1-kcompat.h.patch
-		cd ixgbevf-2.16.1/src
-		patch -p5 <../../patch-ubuntu_14.04.1-ixgbevf-2.16.1-kcompat.h.patch
-		dkms add -m ixgbevf -v 2.16.1
-		dkms build -m ixgbevf -v 2.16.1
-		dkms install -m ixgbevf -v 2.16.1
-		update-initramfs -c -k all
+		cd src
+		patch -p5 < ../patch-ubuntu_14.04.1-ixgbevf-2.16.1-kcompat.h.patch
+		dkms add -m ixgbevf -v 2.16.1 || exit 1
+		dkms build -m ixgbevf -v 2.16.1 || exit 1
+		dkms install -m ixgbevf -v 2.16.1 || exit 1
+		update-initramfs -c -k all || exit 1
 		echo "options ixgbevf InterruptThrottleRate=1,1,1,1,1,1,1,1" > /etc/modprobe.d/ixgbevf.conf
 	EOH
 end
