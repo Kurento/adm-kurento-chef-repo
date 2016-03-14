@@ -245,3 +245,13 @@ end
 service 'coturn' do
 	action :disable
 end
+
+# Clean up image
+bash 'cleanup' do
+	user 'root'
+	flags '-x'
+	code <<-EOH
+		rm -rf /root/.ssh
+		rm -rf /home/ubuntu/.ssh
+	EOH
+end
