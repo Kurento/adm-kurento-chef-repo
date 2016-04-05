@@ -66,7 +66,18 @@ package 'kurento-media-server-6.0' do
   action :upgrade
 end
 
-# install Kurento modules
+# Install Kurento public modules
+package 'kms-background-extractor-6.0'
+package 'kms-chroma-6.0'
+package 'kms-crowddetector-6.0'
+package 'kms-datachannelexample'
+package 'kms-face-segmentator-6.0'
+package 'kms-markerdetector-6.0'
+package 'kms-plumberendpoint-6.0'
+package 'kms-platedetector-6.0'
+package 'kms-pointerdetector-6.0'
+
+# install Kurento private modules
 package 'kms-s3'
 package 'kms-sfu'
 
