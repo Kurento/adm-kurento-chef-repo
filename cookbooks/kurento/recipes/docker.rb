@@ -83,3 +83,6 @@ ruby_block "set_core_pattern" do
   end
   notifies :restart, 'service[docker]', :delayed
 end
+
+# For assigning ips to containers dynamically
+package 'bridge-utils'
