@@ -58,16 +58,16 @@ link '/usr/bin/dogestry' do
   to '/usr/bin/dogestry-linux-2.0.2'
 end
 
-# Make docker listen on all ips
+# Make docker listen on all ips and accept insecure registry
 ruby_block "attach_docker_all_interfaces_and_enable_ipv6" do
   block do
     if File.readlines("/etc/default/docker").grep(/^DOCKER_OPTS/).size > 0
       file = Chef::Util::FileEdit.new("/etc/default/docker")
-      file.search_file_replace_line(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --ipv6 --fixed-cidr-v6=\"2001:db8:1::/64\"\"")
+      file.search_file_replace_line(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --insecure-registry dockerhub.kurento.org:5000 --ipv6 --fixed-cidr-v6=\"2001:db8:1::/64\"\"")
       file.write_file
     else
       file = Chef::Util::FileEdit.new("/etc/default/docker")
-      file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --ipv6 --fixed-cidr-v6=\"2001:db8:1::/64\"\"")
+      file.insert_line_if_no_match(/^DOCKER_OPTS/, "DOCKER_OPTS=\"-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --insecure-registry dockerhub.kurento.org:5000 --ipv6 --fixed-cidr-v6=\"2001:db8:1::/64\"\"")
       file.write_file
     end
   end
