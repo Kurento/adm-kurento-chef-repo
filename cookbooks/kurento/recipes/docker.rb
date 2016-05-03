@@ -31,32 +31,34 @@ group 'docker' do
 end
 
 # Install docker-engine
-package 'curl'
-execute 'curl -sSL https://get.docker.com/ | sh' do
-  not_if { ::File.exists?('/usr/bin/docker') }
+package 'apt-transport-https'
+package 'ca-certificates'
+apt_repository 'docker-engine' do
+  uri 'https://apt.dockerproject.org/repo'
+  distribution 'ubuntu-trusty'
+  components ['main']
+  key '58118E89F3A912897C070ADBF76221572C52609D'
+  keyserver 'hkp://p80.pool.sks-keyservers.net:80'
+  action :add
+end
+execute "apt-get update" do
+  ignore_failure true
+end
+package 'docker-engine' do
+  version '1.11.1-0~trusty'
+  action :install
 end
 
 service "docker" do
-  action :start
+  action [:enable, :start]
   supports :status => true, :start => true, :stop => true, :restart => true
 end
 
 # Install docker-compose
+package 'curl'
 execute 'curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 execute 'chmod +x /usr/local/bin/docker-compose'
 execute "curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose --version | awk 'NR==1{print $NF}')/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
-
-# Install dogestry to have an S3 backed docker repository
-remote_file '/usr/bin/dogestry-linux-2.0.2' do
-	source 'https://github.com/dogestry/dogestry/releases/download/v2.0.2/dogestry-linux-2.0.2'
-	owner 'root'
-	group 'root'
-	mode '0755'
-	action :create
-end
-link '/usr/bin/dogestry' do
-  to '/usr/bin/dogestry-linux-2.0.2'
-end
 
 # Make docker listen on all ips and accept insecure registry
 ruby_block "attach_docker_all_interfaces_and_enable_ipv6" do
