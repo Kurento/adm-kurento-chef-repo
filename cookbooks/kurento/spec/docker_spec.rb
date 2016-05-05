@@ -6,6 +6,8 @@ describe 'kurento::docker' do
       node.set['kurento']['npm']['username'] = 'jenkins'
       node.set['kurento']['npm']['password'] = 'jenkins'
       node.set['kurento']['npm']['email'] = 'jenkins@kurento.org'
+      node.set['kurento']['docker']['version'] = '1.9.1-0~trusty'
+      node.set['kurento']['docker-compose']['version'] = '1.4.0'
     end.converge(described_recipe)
   end
 
@@ -16,6 +18,7 @@ describe 'kurento::docker' do
   end
 
   it 'installs docker-engine package on ubuntu 14.04' do
-    expect(chef_run).to install_package('docker-engine')
+    expect(chef_run).to install_package('docker-engine').with_version('1.9.1-0~trusty')
   end
+
 end

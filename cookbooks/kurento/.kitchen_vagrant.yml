@@ -14,7 +14,7 @@ platforms:
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 
 suites:
-  - name: docker
+  - name: docker-1.9
     driver:
       customize:
         memory: 1024
@@ -31,6 +31,32 @@ suites:
           username: 'vagrantnpmtest'
           password: 'vagrantnpmtest'
           email: 'test@acme.org'
+        docker:
+          version: '1.9.1-0~trusty'
+        docker-compose:
+          version: '1.4.0'
+
+  - name: docker-1.11
+    driver:
+      customize:
+        memory: 1024
+    run_list:
+      - recipe[apt]
+      - recipe[kurento::jenkins-base]
+      - recipe[kurento::docker]
+    attributes:
+      kurento:
+        home: '/home/vagrant'
+        user: 'vagrant'
+        group: 'vagrant'
+        npm:
+          username: 'vagrantnpmtest'
+          password: 'vagrantnpmtest'
+          email: 'test@acme.org'
+        docker:
+          version: '1.11.1-0~trusty'
+        docker-compose:
+          version: '1.7.0'
 
   - name: kurento-demo
     run_list:

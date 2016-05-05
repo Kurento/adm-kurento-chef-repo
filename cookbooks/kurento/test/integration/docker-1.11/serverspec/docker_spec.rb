@@ -29,6 +29,11 @@ describe file('/usr/local/bin/docker-compose') do
 		it { should be_file }
 end
 
+describe command('docker-compose --version') do
+  its(:stdout) { should match /1.7.0/ }
+  its(:exit_status) { should eq 0 }
+end
+
 describe file('/etc/default/docker') do
   its(:content) { should match /--insecure-registry dockerhub.kurento.org:5000/ }
 end
