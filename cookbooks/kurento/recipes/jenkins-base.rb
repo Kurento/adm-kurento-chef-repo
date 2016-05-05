@@ -63,10 +63,6 @@ execute "apt-get update" do
   ignore_failure true
 end
 
-execute "apt-get upgrade --force-yes -y --fix-missing" do
-  environment "DEBIAN_FRONTEND" => "noninteractive"
-end
-
 # Disable IPV6
 ruby_block "disable_ipv6" do
   block do
