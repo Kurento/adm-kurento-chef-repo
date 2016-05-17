@@ -58,6 +58,19 @@ suites:
         docker-compose:
           version: '1.7.0'
 
+  - name: jenkins-base
+    data_bags_path: "test/integration/data_bags"
+    driver:
+      customize:
+        memory: 1024
+    run_list:
+      - recipe[ohai]
+      - recipe[apt]
+      - recipe[kurento::jenkins-base]
+    attributes:
+      kurento:
+        gerrit-user: jenkinskurento
+
   - name: kurento-demo
     run_list:
       - recipe[kurento::kurento-demo]

@@ -123,19 +123,28 @@ package 'python-software-properties'
 package 'unzip'
 package 'zip'
 
+ohai 'reload_passwd' do
+  action :nothing
+  plugin 'etc'
+end
+
 # Create user & group jenkins
 user node['kurento']['user'] do
   home node['kurento']['home']
   shell '/bin/bash'
   supports :manage_home => true
+  notifies :reload, 'ohai[reload_passwd]', :immediately
 end
 
 group node['kurento']['group'] do
   members node['kurento']['user']
+  notifies :reload, 'ohai[reload_passwd]', :immediately
 end
 
 # This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
-node.automatic_attrs[:etc][:passwd][node['kurento']['user']] = {:uid => node['kurento']['user'], :gid => node['kurento']['group'], :dir => node['kurento']['home']}
+#node.automatic_attrs[:etc][:passwd][node['kurento']['user']] = {:uid => node['kurento']['user'], :gid => node['kurento']['group'], :dir => node['kurento']['home']}
+
+
 
 # Install git and configure user
 include_recipe 'git_user'
@@ -184,22 +193,11 @@ cookbook_file 'jenkins.crt' do
   action :create_if_missing
 end
 
-# Disable strict host checking. Accepts keys from all hosts
-if not ::File.exists?("#{node['kurento']['home']}/.ssh/config") then
-  file "#{node['kurento']['home']}/.ssh/config" do
-    content "StrictHostKeyChecking no"
-    action :create
-    owner node['kurento']['user']
-    group node['kurento']['group']
-  end
-else
-  ruby_block "disable_host_key_verification" do
-    block do
-      file = Chef::Util::FileEdit.new("#{node['kurento']['home']}/.ssh/config")
-      file.insert_line_if_no_match(/StrictHostKeyChecking no/, "StrictHostKeyChecking no")
-      file.write_file
-    end
-  end
+template "#{node['kurento']['home']}/.ssh/config" do
+  source 'config.erb'
+  owner node['kurento']['user']
+  group node['kurento']['group']
+  mode '0644'
 end
 
 # Add public key from master
