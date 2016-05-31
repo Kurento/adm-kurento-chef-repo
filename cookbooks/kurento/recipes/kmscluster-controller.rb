@@ -73,7 +73,8 @@ package 'kms-crowddetector-6.0'
 package 'kms-datachannelexample'
 package 'kms-face-segmentator-6.0'
 package 'kms-markerdetector-6.0'
-package 'kms-plumberendpoint-6.0'
+# Do not install plumber until it is fixed
+#package 'kms-plumberendpoint-6.0'
 package 'kms-platedetector-6.0'
 package 'kms-pointerdetector-6.0'
 
