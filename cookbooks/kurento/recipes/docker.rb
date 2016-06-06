@@ -46,7 +46,7 @@ execute "apt-get update" do
 end
 package 'docker-engine' do
   version node['kurento']['docker']['version']
-  options '--force-yes'
+  options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
   action :install
 end
 
