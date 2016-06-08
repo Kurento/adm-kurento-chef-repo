@@ -48,6 +48,7 @@ package 'docker-engine' do
   version node['kurento']['docker']['version']
   options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
   action :install
+  notifies :restart, 'service[docker]', :delayed
 end
 
 service "docker" do
