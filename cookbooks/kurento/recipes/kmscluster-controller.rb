@@ -263,6 +263,7 @@ bash 'cleanup' do
 	user 'root'
 	flags '-x'
 	code <<-EOH
+		passwd -l root
 		rm -rf /root/.ssh
 		rm -rf /home/ubuntu/.ssh
 	EOH
