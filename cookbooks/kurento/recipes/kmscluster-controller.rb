@@ -264,7 +264,11 @@ bash 'cleanup' do
 	flags '-x'
 	code <<-EOH
 		passwd -l root
+		shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
+		shred -u /root/.ssh/*
 		rm -rf /root/.ssh
+		shred -u /home/ubuntu/.ssh/*
 		rm -rf /home/ubuntu/.ssh
+		shred -u ~/.*history
 	EOH
 end
