@@ -264,11 +264,12 @@ bash 'cleanup' do
 	flags '-x'
 	code <<-EOH
 		passwd -l root
+		sed -i -e "s/^.*PermitRootLogin.*$//" /etc/ssh/sshd_config
+		echo "PermitRootLogin forced-commands-only" >> /etc/ssh/sshd_config
 		shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
 		shred -u /root/.ssh/*
 		rm -rf /root/.ssh
 		shred -u /home/ubuntu/.ssh/*
 		rm -rf /home/ubuntu/.ssh
-		shred -u ~/.*history
 	EOH
 end
