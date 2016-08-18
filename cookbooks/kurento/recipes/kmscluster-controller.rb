@@ -53,6 +53,7 @@ end
 
 execute 'apt-key update'
 execute 'apt-get update'
+execute 'apt-get -y upgrade'
 
 package 'unzip'
 package 'nginx'
