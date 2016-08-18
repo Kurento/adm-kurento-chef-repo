@@ -271,5 +271,6 @@ bash 'cleanup' do
 		rm -rf /root/.ssh
 		shred -u /home/ubuntu/.ssh/*
 		rm -rf /home/ubuntu/.ssh
+		rm /etc/apt/s3auth.conf
 	EOH
 end
