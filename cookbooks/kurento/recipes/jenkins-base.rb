@@ -83,12 +83,6 @@ directory '/var/run/sshd' do
   recursive true
 end
 
-# Install git-review
-package 'git-review'
-
-# Install postpone
-package 'postpone'
-
 # Needed for adm-scripts
 package 'realpath'
 
