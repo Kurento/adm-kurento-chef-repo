@@ -22,7 +22,7 @@ default['ohai']['plugin_path'] = case node['platform_family']
                                  when 'windows'
                                    "#{ENV['systemdrive']}/chef/ohai_plugins"
                                  else
-                                   'files/default/plugins'
+                                   '/etc/chef/ohai_plugins'
                                  end
 
 # The list of plugins and their respective file locations
