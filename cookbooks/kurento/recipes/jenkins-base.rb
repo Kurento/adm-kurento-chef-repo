@@ -118,8 +118,8 @@ package 'unzip'
 package 'zip'
 
 ohai 'reload_passwd' do
-  action :nothing
-  plugin 'passwd'
+  action :reload
+  plugin 'etc'
 end
 
 # Create user & group jenkins
