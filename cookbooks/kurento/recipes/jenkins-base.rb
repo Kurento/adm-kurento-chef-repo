@@ -118,7 +118,7 @@ package 'unzip'
 package 'zip'
 
 ohai 'reload_passwd' do
-  action :reload
+  action :nothing
   plugin 'etc'
 end
 
@@ -126,7 +126,7 @@ end
 user node['kurento']['user'] do
   home node['kurento']['home']
   shell '/bin/bash'
-  supports :manage_home => true
+  #supports :manage_home => true
   notifies :reload, 'ohai[reload_passwd]', :immediately
 end
 
