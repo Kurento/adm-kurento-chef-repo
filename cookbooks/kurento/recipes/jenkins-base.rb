@@ -126,7 +126,7 @@ end
 user node['kurento']['user'] do
   home node['kurento']['home']
   shell '/bin/bash'
-  #supports :manage_home => true
+  supports :manage_home => true
   notifies :reload, 'ohai[reload_passwd]', :immediately
 end
 
@@ -196,7 +196,7 @@ end
 
 # Add public key from master
 ssh_known_hosts_entry node['kurento']['master-host']
-include_recipe 'ssh-keys'
+#include_recipe 'ssh-keys'
 
 # Add private key from master
 user = data_bag_item('users', 'jenkins')
