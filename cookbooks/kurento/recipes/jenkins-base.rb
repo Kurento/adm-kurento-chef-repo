@@ -73,8 +73,8 @@ ruby_block "disable_ipv6" do
 end
 
 # Fix locales if needed
-execute 'locale-gen es_ES es_ES.UTF-8'
-execute 'dpkg-reconfigure locales'
+#execute 'locale-gen es_ES es_ES.UTF-8'
+#execute 'dpkg-reconfigure locales'
 
 # Install openssh and create directory /var/run/sshd
 package 'openssh-server'
