@@ -138,8 +138,6 @@ end
 # This seems like a hack, but it isn't. See https://tickets.opscode.com/browse/OHAI-389
 #node.automatic_attrs[:etc][:passwd][node['kurento']['user']] = {:uid => node['kurento']['user'], :gid => node['kurento']['group'], :dir => node['kurento']['home']}
 
-
-
 # Install git and configure user
 include_recipe 'git_user'
 git_user node['kurento']['user'] do
@@ -193,6 +191,9 @@ template "#{node['kurento']['home']}/.ssh/config" do
   group node['kurento']['group']
   mode '0644'
 end
+
+# Doing some debuging
+puts node['etc']['passwd'][node_user]
 
 # Add public key from master
 ssh_known_hosts_entry node['kurento']['master-host']
