@@ -193,7 +193,7 @@ template "#{node['kurento']['home']}/.ssh/config" do
 end
 
 # Doing some debuging
-puts node['etc']['passwd'][node_user]
+puts node['etc']['passwd']
 
 # Add public key from master
 ssh_known_hosts_entry node['kurento']['master-host']
