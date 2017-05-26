@@ -118,6 +118,7 @@ package 'unzip'
 package 'zip'
 
 ohai 'reload_passwd' do
+  name   'reload_passwd'
   action :nothing
   plugin 'etc'
 end
