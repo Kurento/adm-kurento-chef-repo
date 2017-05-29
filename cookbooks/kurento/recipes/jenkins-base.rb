@@ -193,10 +193,6 @@ template "#{node['kurento']['home']}/.ssh/config" do
   mode '0644'
 end
 
-# Doing some debuging
-output="#{Chef::JSONCompat.to_json_pretty(node.to_hash)}"
-log output
-
 # Add public key from master
 ssh_known_hosts_entry node['kurento']['master-host']
 include_recipe 'ssh-keys'
